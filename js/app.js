@@ -177,13 +177,17 @@ const app = {
                                 <label style="text-align: left;">Status</label>
                                 <select>
                                     <option value="">All Statuses</option>
+                                    <option value="Draft">Draft</option>
+                                    <option value="Submitted">Submitted</option>
+                                    <option value="Under Review">Under Review</option>
+                                    <option value="Additional Info">Additional Info Required</option>
                                     <option value="Approved">Approved</option>
-                                    <option value="Pending">Pending</option>
                                     <option value="Rejected">Rejected</option>
+                                    <option value="Cancelled">Cancelled</option>
                                 </select>
                             </div>
                             <div class="form-group stacked">
-                                <label style="text-align: left;">Date Range</label>
+                                <label style="text-align: left;">Submission Date</label>
                                 <input type="date">
                             </div>
                         </div>
@@ -223,7 +227,7 @@ const app = {
                                     <td>Kumar R.</td>
                                     <td>Home Reno</td>
                                     <td>$25,000</td>
-                                    <td><span class="badge badge-warning">Pending Docs</span></td>
+                                    <td><span class="badge badge-warning">Additional Info Required</span></td>
                                     <td>Oct 28, 2023 09:15 AM</td>
                                     <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
                                 </tr>
@@ -250,9 +254,27 @@ const app = {
                                     <td>John Doe</td>
                                     <td>Personal</td>
                                     <td>$12,000</td>
-                                    <td><span class="badge badge-blue">Submitted</span></td>
+                                    <td><span class="badge badge-blue" style="background: #e0f2fe; color: #0284c7;">Submitted</span></td>
                                     <td>Oct 26, 2023 11:30 AM</td>
                                     <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">#APP-2023-912</td>
+                                    <td>Michelle Tan</td>
+                                    <td>Housing Loan</td>
+                                    <td>$350,000</td>
+                                    <td><span class="badge" style="background: #f1f5f9; color: #64748b;">Draft</span></td>
+                                    <td>-</td>
+                                    <td><button class="icon-btn"><i class="ph ph-pencil"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">#APP-2023-855</td>
+                                    <td>Rajesh K.</td>
+                                    <td>Personal-i</td>
+                                    <td>$10,000</td>
+                                    <td><span class="badge" style="background: #fee2e2; color: #991b1b;">Cancelled</span></td>
+                                    <td>Oct 20, 2023 09:00 AM</td>
+                                    <td><button class="icon-btn"><i class="ph ph-eye"></i></button></td>
                                 </tr>
                             </tbody>
                         </table>
