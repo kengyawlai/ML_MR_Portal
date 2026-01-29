@@ -291,9 +291,14 @@ const app = {
                             <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Process CSV or Excel files in bulk.</p>
                         </div>
                     </div>
-                     <button class="btn btn-primary" onclick="app.startWizard()">
-                        <i class="ph ph-upload-simple"></i> Start Bulk Upload
-                     </button>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-outline" onclick="alert('Downloading Bulk Upload Template (XLSX)...')">
+                            <i class="ph ph-download-simple"></i> Download Template
+                        </button>
+                        <button class="btn btn-primary" onclick="app.startWizard()">
+                            <i class="ph ph-upload-simple"></i> Start Bulk Upload
+                        </button>
+                    </div>
                 </div>
 
                 <!-- History Section (Green Box Area) -->
