@@ -3,7 +3,7 @@ ML MR Portal Mockup
 
 How to Run:
 -----------
-1. Simply double-click on file "ML BR Portal.html" to open it in your web browser (Chrome, Edge, Firefox, etc.).
+1. Simply double-click on file "index.html" to open it in your web browser (Chrome, Edge, Firefox, etc.).
 2. No installation or server is required.
 
 Notes:
@@ -14,6 +14,6 @@ Notes:
 
 Folder Structure:
 -----------------
-- ML BR Portal.html  : The main entry point (Open this file).
-- css/               : Stylesheets.
-- js/                : Application logic.
+- index.html    : The main entry point (Open this file).
+- css/          : Stylesheets.
+- js/           : Application logic.
