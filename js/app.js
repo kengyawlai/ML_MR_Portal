@@ -164,18 +164,19 @@ const app = {
 
                 <!-- Search / Filter Section -->
                 <div class="card" style="margin-bottom: 24px; padding: 24px;">
-                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end;">
-                        <div class="form-grid-dense" style="grid-template-columns: repeat(3, 1fr); margin: 0;">
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <div class="form-grid-dense" style="grid-template-columns: repeat(4, 1fr); margin: 0; gap: 16px;">
                             <div class="form-group stacked">
-                                <label style="text-align: left;">Search by Keyword</label>
-                                <div style="position: relative;">
-                                    <input type="text" placeholder="Application ID, Customer Name..." style="padding-left: 36px; width: 100%;">
-                                    <i class="ph ph-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
-                                </div>
+                                <label style="text-align: left;">Application ID</label>
+                                <input type="text" placeholder="e.g. #APP-2023-..." style="width: 100%;">
+                            </div>
+                            <div class="form-group stacked">
+                                <label style="text-align: left;">Customer Name</label>
+                                <input type="text" placeholder="e.g. Alice Wong" style="width: 100%;">
                             </div>
                             <div class="form-group stacked">
                                 <label style="text-align: left;">Status</label>
-                                <select>
+                                <select style="width: 100%;">
                                     <option value="">All Statuses</option>
                                     <option value="Draft">Draft</option>
                                     <option value="Submitted">Submitted</option>
@@ -188,12 +189,14 @@ const app = {
                             </div>
                             <div class="form-group stacked">
                                 <label style="text-align: left;">Submission Date</label>
-                                <input type="date">
+                                <input type="date" style="width: 100%;">
                             </div>
                         </div>
-                        <button class="btn btn-primary" style="height: 42px;">
-                            <i class="ph ph-magnifying-glass"></i> Search
-                        </button>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button class="btn btn-primary" style="height: 42px; padding: 0 24px;">
+                                <i class="ph ph-magnifying-glass"></i> Search
+                            </button>
+                        </div>
                     </div>
                 </div>
 
