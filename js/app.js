@@ -37,111 +37,231 @@ const app = {
         const content = document.getElementById('app-content');
         const title = document.getElementById('page-title');
 
+        // Reset Wizard state if leaving wizard
+        if (viewId !== 'applications') {
+            this.state.inWizard = false;
+        }
+
         if (viewId === 'dashboard') {
             title.textContent = 'Dashboard';
             content.innerHTML = this.views.dashboard();
         } else if (viewId === 'applications') {
             title.textContent = 'Bulk Upload';
             content.innerHTML = this.views.applications();
+        } else if (viewId === 'tracking') {
+            title.textContent = 'Application Tracking';
+            content.innerHTML = this.views.tracking();
         }
     },
 
     views: {
         dashboard: function () {
             return `
-                <!-- Top Row: KPIs -->
-                <div class="kpi-grid">
-                    <div class="card kpi-card">
-                        <span class="kpi-label">Submitted</span>
-                        <span class="kpi-value">45</span>
-                        <span class="kpi-trend trend-up"><i class="ph ph-check-circle"></i> This Month</span>
+                    <!-- Top Row: KPIs -->
+                    <div class="kpi-grid">
+                        <div class="card kpi-card">
+                            <span class="kpi-label">Submitted</span>
+                            <span class="kpi-value">45</span>
+                            <span class="kpi-trend trend-up"><i class="ph ph-check-circle"></i> This Month</span>
+                        </div>
+                        <div class="card kpi-card">
+                            <span class="kpi-label">Approved</span>
+                            <span class="kpi-value text-success">32</span>
+                            <span class="kpi-trend trend-up"><i class="ph ph-trend-up"></i> 71% Rate</span>
+                        </div>
+                        <div class="card kpi-card">
+                            <span class="kpi-label">Pending</span>
+                            <span class="kpi-value" style="color: var(--warning-color)">8</span>
+                            <span class="kpi-trend"><i class="ph ph-clock"></i> In Progress</span>
+                        </div>
+                        <div class="card kpi-card">
+                            <span class="kpi-label">Rejected</span>
+                            <span class="kpi-value" style="color: var(--danger-color)">5</span>
+                            <span class="kpi-trend trend-down"><i class="ph ph-x-circle"></i> 11% Rate</span>
+                        </div>
                     </div>
-                    <div class="card kpi-card">
-                        <span class="kpi-label">Approved</span>
-                        <span class="kpi-value text-success">32</span>
-                        <span class="kpi-trend trend-up"><i class="ph ph-trend-up"></i> 71% Rate</span>
+
+                    <!-- Middle Details Section -->
+                    <div class="dashboard-split-grid">
+                        <!-- Left: Chart/Performance -->
+                        <div class="card" style="min-height: 400px; display: flex; flex-direction: column;">
+                            <div class="flex justify-between items-center" style="margin-bottom: 24px;">
+                                <h3>Performance Overview</h3>
+                                <select style="font-size: 0.85rem; padding: 4px 8px;"><option>This Year</option><option>Last Year</option></select>
+                            </div>
+                            
+                            <!-- CSS/SVG Chart Simulation -->
+                            <div style="flex: 1; display: flex; align-items: flex-end; justify-content: space-around; padding: 0 16px; gap: 8px;">
+                                ${[40, 65, 45, 80, 55, 90, 70, 85, 60, 75, 50, 95].map((h, i) => `
+                                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                                        <div style="width: 100%; height: ${h * 2.5}px; background: ${i === 11 ? 'var(--accent-color)' : '#e2e8f0'}; border-radius: 4px 4px 0 0; transition: all 0.3s; opacity: 0.8;"></div>
+                                        <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 8px;">${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i]}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Right: Quick Actions / Recent Apps -->
+                        <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+                            <div style="padding: 16px 24px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
+                                <h3 style="margin: 0; font-size: 1rem;">Recent Activity</h3>
+                                <a href="#" style="font-size: 0.8rem; color: var(--accent-color);">View All</a>
+                            </div>
+                            <div class="table-container" style="flex: 1;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>App ID</th>
+                                            <th>Product</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#LN-889</td>
+                                            <td>Personal-i</td>
+                                            <td><span class="badge badge-success">Approved</span></td>
+                                            <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>#LN-892</td>
+                                            <td>Home Reno</td>
+                                            <td><span class="badge badge-warning">Docs</span></td>
+                                            <td><button class="icon-btn"><i class="ph ph-upload"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>#LN-901</td>
+                                            <td>Biz Micro</td>
+                                            <td><span class="badge badge-blue">Review</span></td>
+                                            <td><button class="icon-btn"><i class="ph ph-eye"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>#LN-905</td>
+                                            <td>Car Loan</td>
+                                            <td><span class="badge badge-blue">Submit</span></td>
+                                            <td><button class="icon-btn"><i class="ph ph-eye"></i></button></td>
+                                        </tr>
+                                         <tr>
+                                            <td>#LN-910</td>
+                                            <td>Personal</td>
+                                            <td><span class="badge badge-blue">Draft</span></td>
+                                            <td><button class="icon-btn"><i class="ph ph-pencil"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card kpi-card">
-                        <span class="kpi-label">Pending</span>
-                        <span class="kpi-value" style="color: var(--warning-color)">8</span>
-                        <span class="kpi-trend"><i class="ph ph-clock"></i> In Progress</span>
-                    </div>
-                    <div class="card kpi-card">
-                        <span class="kpi-label">Rejected</span>
-                        <span class="kpi-value" style="color: var(--danger-color)">5</span>
-                        <span class="kpi-trend trend-down"><i class="ph ph-x-circle"></i> 11% Rate</span>
+                `;
+        },
+
+        tracking: function () {
+            return `
+                <div class="flex justify-between items-center" style="margin-bottom: 24px;">
+                    <h2>Application Tracking</h2>
+                </div>
+
+                <!-- Search / Filter Section -->
+                <div class="card" style="margin-bottom: 24px; padding: 24px;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end;">
+                        <div class="form-grid-dense" style="grid-template-columns: repeat(3, 1fr); margin: 0;">
+                            <div class="form-group stacked">
+                                <label style="text-align: left;">Search by Keyword</label>
+                                <div style="position: relative;">
+                                    <input type="text" placeholder="Application ID, Customer Name..." style="padding-left: 36px; width: 100%;">
+                                    <i class="ph ph-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                                </div>
+                            </div>
+                            <div class="form-group stacked">
+                                <label style="text-align: left;">Status</label>
+                                <select>
+                                    <option value="">All Statuses</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </div>
+                            <div class="form-group stacked">
+                                <label style="text-align: left;">Date Range</label>
+                                <input type="date">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="height: 42px;">
+                            <i class="ph ph-magnifying-glass"></i> Search
+                        </button>
                     </div>
                 </div>
 
-                <!-- Middle Details Section -->
-                <div class="dashboard-split-grid">
-                    <!-- Left: Chart/Performance -->
-                    <div class="card" style="min-height: 400px; display: flex; flex-direction: column;">
-                        <div class="flex justify-between items-center" style="margin-bottom: 24px;">
-                            <h3>Performance Overview</h3>
-                            <select style="font-size: 0.85rem; padding: 4px 8px;"><option>This Year</option><option>Last Year</option></select>
-                        </div>
-                        
-                        <!-- CSS/SVG Chart Simulation -->
-                        <div style="flex: 1; display: flex; align-items: flex-end; justify-content: space-around; padding: 0 16px; gap: 8px;">
-                            ${[40, 65, 45, 80, 55, 90, 70, 85, 60, 75, 50, 95].map((h, i) => `
-                                <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                                    <div style="width: 100%; height: ${h * 2.5}px; background: ${i === 11 ? 'var(--accent-color)' : '#e2e8f0'}; border-radius: 4px 4px 0 0; transition: all 0.3s; opacity: 0.8;"></div>
-                                    <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 8px;">${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i]}</span>
-                                </div>
-                            `).join('')}
-                        </div>
+                <!-- Results Table -->
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Application ID</th>
+                                    <th>Customer Name</th>
+                                    <th>Product</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Submission Date/Time</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight: 500;">#APP-2023-889</td>
+                                    <td>Alice Wong</td>
+                                    <td>Personal-i</td>
+                                    <td>$5,000</td>
+                                    <td><span class="badge badge-success">Approved</span></td>
+                                    <td>Oct 28, 2023 10:30 AM</td>
+                                    <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">#APP-2023-892</td>
+                                    <td>Kumar R.</td>
+                                    <td>Home Reno</td>
+                                    <td>$25,000</td>
+                                    <td><span class="badge badge-warning">Pending Docs</span></td>
+                                    <td>Oct 28, 2023 09:15 AM</td>
+                                    <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">#APP-2023-901</td>
+                                    <td>Tan Ah Beng</td>
+                                    <td>Biz Micro</td>
+                                    <td>$50,000</td>
+                                    <td><span class="badge badge-blue">Under Review</span></td>
+                                    <td>Oct 27, 2023 04:45 PM</td>
+                                    <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">#APP-2023-905</td>
+                                    <td>Siti Aminah</td>
+                                    <td>Car Loan</td>
+                                    <td>$80,000</td>
+                                    <td><span class="badge badge-error" style="background: #fee2e2; color: #ef4444;">Rejected</span></td>
+                                    <td>Oct 27, 2023 02:20 PM</td>
+                                    <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: 500;">#APP-2023-910</td>
+                                    <td>John Doe</td>
+                                    <td>Personal</td>
+                                    <td>$12,000</td>
+                                    <td><span class="badge badge-blue">Submitted</span></td>
+                                    <td>Oct 26, 2023 11:30 AM</td>
+                                    <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <!-- Right: Quick Actions / Recent Apps -->
-                    <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
-                        <div style="padding: 16px 24px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="margin: 0; font-size: 1rem;">Recent Activity</h3>
-                            <a href="#" style="font-size: 0.8rem; color: var(--accent-color);">View All</a>
-                        </div>
-                        <div class="table-container" style="flex: 1;">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>App ID</th>
-                                        <th>Product</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>#LN-889</td>
-                                        <td>Personal-i</td>
-                                        <td><span class="badge badge-success">Approved</span></td>
-                                        <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>#LN-892</td>
-                                        <td>Home Reno</td>
-                                        <td><span class="badge badge-warning">Docs</span></td>
-                                        <td><button class="icon-btn"><i class="ph ph-upload"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>#LN-901</td>
-                                        <td>Biz Micro</td>
-                                        <td><span class="badge badge-blue">Review</span></td>
-                                        <td><button class="icon-btn"><i class="ph ph-eye"></i></button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>#LN-905</td>
-                                        <td>Car Loan</td>
-                                        <td><span class="badge badge-blue">Submit</span></td>
-                                        <td><button class="icon-btn"><i class="ph ph-eye"></i></button></td>
-                                    </tr>
-                                     <tr>
-                                        <td>#LN-910</td>
-                                        <td>Personal</td>
-                                        <td><span class="badge badge-blue">Draft</span></td>
-                                        <td><button class="icon-btn"><i class="ph ph-pencil"></i></button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    <div style="padding: 16px 24px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem;">
+                        <span>Showing 1-5 of 128 results</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="icon-btn" disabled><i class="ph ph-caret-left"></i></button>
+                            <button class="icon-btn"><i class="ph ph-caret-right"></i></button>
                         </div>
                     </div>
                 </div>
