@@ -112,41 +112,41 @@ const app = {
                                     <thead>
                                         <tr>
                                             <th>App ID</th>
+                                            <th>Customer Name</th>
                                             <th>Product</th>
                                             <th>Status</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>#LN-889</td>
+                                            <td>Alice Wong</td>
                                             <td>Personal-i</td>
                                             <td><span class="badge badge-success">Approved</span></td>
-                                            <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
                                         </tr>
                                         <tr>
                                             <td>#LN-892</td>
+                                            <td>Kumar R.</td>
                                             <td>Home Reno</td>
-                                            <td><span class="badge badge-warning">Docs</span></td>
-                                            <td><button class="icon-btn"><i class="ph ph-upload"></i></button></td>
+                                            <td><span class="badge badge-warning">Additional Information Required</span></td>
                                         </tr>
                                         <tr>
                                             <td>#LN-901</td>
+                                            <td>Tan Ah Beng</td>
                                             <td>Biz Micro</td>
-                                            <td><span class="badge badge-blue">Review</span></td>
-                                            <td><button class="icon-btn"><i class="ph ph-eye"></i></button></td>
+                                            <td><span class="badge badge-blue">Under Review</span></td>
                                         </tr>
                                         <tr>
                                             <td>#LN-905</td>
+                                            <td>Siti Aminah</td>
                                             <td>Car Loan</td>
-                                            <td><span class="badge badge-blue">Submit</span></td>
-                                            <td><button class="icon-btn"><i class="ph ph-eye"></i></button></td>
+                                            <td><span class="badge badge-blue" style="background: #e0f2fe; color: #0284c7;">Submitted</span></td>
                                         </tr>
                                          <tr>
                                             <td>#LN-910</td>
+                                            <td>John Doe</td>
                                             <td>Personal</td>
-                                            <td><span class="badge badge-blue">Draft</span></td>
-                                            <td><button class="icon-btn"><i class="ph ph-pencil"></i></button></td>
+                                            <td><span class="badge" style="background: #f1f5f9; color: #64748b;">Draft</span></td>
                                         </tr>
                                     </tbody>
                                 </table>
