@@ -105,7 +105,7 @@ const app = {
                         <div class="card" style="padding: 0; overflow: hidden; display: flex; flex-direction: column;">
                             <div style="padding: 16px 24px; border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center;">
                                 <h3 style="margin: 0; font-size: 1rem;">Recent Activity</h3>
-                                <a href="#" style="font-size: 0.8rem; color: var(--accent-color);">View All</a>
+                                <a href="#" onclick="app.navigate('tracking')" style="font-size: 0.8rem; color: var(--accent-color);">View All</a>
                             </div>
                             <div class="table-container" style="flex: 1;">
                                 <table>
@@ -119,33 +119,33 @@ const app = {
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>#LN-889</td>
+                                            <td>#APP-2023-889</td>
                                             <td>Alice Wong</td>
                                             <td>Personal-i</td>
                                             <td><span class="badge badge-success">Approved</span></td>
                                         </tr>
                                         <tr>
-                                            <td>#LN-892</td>
+                                            <td>#APP-2023-892</td>
                                             <td>Kumar R.</td>
                                             <td>Home Reno</td>
                                             <td><span class="badge badge-warning">Additional Information Required</span></td>
                                         </tr>
                                         <tr>
-                                            <td>#LN-901</td>
+                                            <td>#APP-2023-901</td>
                                             <td>Tan Ah Beng</td>
                                             <td>Biz Micro</td>
                                             <td><span class="badge badge-blue">Under Review</span></td>
                                         </tr>
                                         <tr>
-                                            <td>#LN-905</td>
-                                            <td>Siti Aminah</td>
-                                            <td>Car Loan</td>
+                                            <td>#APP-2023-910</td>
+                                            <td>John Doe</td>
+                                            <td>Personal</td>
                                             <td><span class="badge badge-blue" style="background: #e0f2fe; color: #0284c7;">Submitted</span></td>
                                         </tr>
                                          <tr>
-                                            <td>#LN-910</td>
-                                            <td>John Doe</td>
-                                            <td>Personal</td>
+                                            <td>#APP-2023-912</td>
+                                            <td>Michelle Tan</td>
+                                            <td>Housing Loan</td>
                                             <td><span class="badge" style="background: #f1f5f9; color: #64748b;">Draft</span></td>
                                         </tr>
                                     </tbody>
