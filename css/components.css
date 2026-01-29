@@ -606,8 +606,29 @@ tr:last-child td {
     text-decoration: none;
 }
 
-.btn-full {
+
+/* Enhanced Input Styling */
+.form-group input,
+.form-group select {
     width: 100%;
-    padding: 12px;
-    font-size: 1rem;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    /* Increased size */
+    transition: all 0.2s;
+    height: 42px;
+    /* Fixed height for consistency */
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.login-form input {
+    height: auto;
+    /* Revert for login if needed, or keep consistent */
 }
