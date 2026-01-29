@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML MR Portal | Dashboard</title>
+
+    <!-- Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons: Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+
+<body>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-brand">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" />
+                    </svg>
+                    <span>ML MR Portal</span>
+                </div>
+                <p style="color: #64748b; font-size: 0.9rem;">Please sign in to your account</p>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label>Username / Agent ID</label>
+                    <input type="text" id="username" placeholder="Enter your ID" value="david.agent">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" value="password123">
+                </div>
+                <div class="login-footer">
+                    <label style="display: flex; gap: 8px; align-items: center; font-weight: 400; margin: 0;">
+                        <input type="checkbox" style="width: auto;"> Remember me
+                    </label>
+                    <a href="#" onclick="alert('Password reset link sent to your email.')">Forgot Password?</a>
+                </div>
+                <button class="btn btn-primary btn-full" onclick="app.login()">Sign In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Layout (Hidden by default) -->
+    <div id="app-layout" class="app-layout" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" />
+                </svg>
+                <span>ML MR Portal</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="app.navigate('dashboard')">
+                        <i class="ph ph-squares-four"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="app.navigate('applications')">
+                        <i class="ph ph-upload-simple"></i>
+                        <span>Bulk Upload</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="ph ph-list-checks"></i>
+                        <span>Application Tracking</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <span>Application Query</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="ph ph-chart-line-up"></i>
+                        <span>Performance & Commission</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Bottom Section: Messages & Profile -->
+            <div style="padding: 0 var(--spacing-sm); margin-bottom: 8px;">
+                <a href="#" class="nav-link" style="color: #94a3b8;">
+                    <i class="ph ph-envelope-simple"></i>
+                    <span>Messages</span>
+                    <span class="badge badge-blue" style="margin-left: auto;">2</span>
+                </a>
+            </div>
+
+            <div class="user-profile-mini">
+                <div class="avatar">DA</div>
+                <div style="flex: 1">
+                    <div style="font-weight: 500; font-size: 0.9rem;">David Agent</div>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">Senior MR</div>
+                </div>
+                <div title="Sign Out" onclick="app.logout()">
+                    <i class="ph ph-sign-out" style="cursor: pointer; color: #ef4444;"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <!-- Topbar -->
+            <header class="top-bar">
+                <div class="breadcrumb">
+                    Portal / <span id="page-title">Dashboard</span>
+                </div>
+
+                <div class="header-actions">
+                    <div style="position: relative;">
+                        <input type="text" placeholder="Search application ID..."
+                            style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9rem; width: 240px; background: #f8fafc;">
+                    </div>
+                    <button class="icon-btn">
+                        <i class="ph ph-bell" style="font-size: 1.25rem;"></i>
+                        <span class="badge-dot"></span>
+                    </button>
+                    <button class="icon-btn">
+                        <i class="ph ph-gear" style="font-size: 1.25rem;"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dynamic Views -->
+            <main id="app-content" class="page-content">
+                <!-- Content will be injected here by app.js -->
+            </main>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

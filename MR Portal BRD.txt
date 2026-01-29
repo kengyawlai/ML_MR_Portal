@@ -1,0 +1,375 @@
+
+Below is a formal BRD / FRD-style system requirement specification for the Marketing Representative (MR) / Sales Agent Portal, written in clear, auditable, and implementation-ready language suitable for bank IT, compliance, and vendor evaluation.
+________________________________________
+Marketing Representative (MR) / Sales Agent Portal
+Business Requirements & Functional Requirements
+________________________________________
+1. Business Objectives (BRD)
+BRD-01
+The system shall provide a secure digital portal to enable authorised Marketing Representatives (MRs) and Sales Agents to submit, track, and manage loan applications on behalf of customers.
+BRD-02
+The system shall improve loan application quality, reduce processing turnaround time, and minimise manual handling by Financial Institution (FI) officers.
+BRD-03
+The system shall support controlled bulk loan application submissions for eligible products and authorised MR groups while maintaining compliance and data integrity.
+BRD-04
+The system shall provide transparent communication and collaboration between MRs and FI officers with full auditability.
+________________________________________
+2. User Roles & Access Control (FRD)
+FRD-01
+The system shall support role-based access control (RBAC) for the following user roles:
+•	Marketing Representative
+•	Sales Agent
+•	Agency Manager / Team Leader
+•	FI Officer (Read / Review)
+•	System Administrator
+FRD-02
+The system shall restrict access to loan products, submission modes, and data visibility based on user role and assigned permissions.
+FRD-03
+The system shall enforce secure authentication mechanisms, including multi-factor authentication (MFA) where applicable.
+________________________________________
+3. Loan Application Submission (FRD)
+3.1 Single Loan Application (Primary Workflow)
+FRD-04
+The system shall allow MRs to submit loan applications individually via a guided digital workflow.
+FRD-05
+The system shall support saving loan applications in draft status prior to submission.
+FRD-06
+The system shall validate mandatory fields and required documents before allowing submission.
+FRD-07
+The system shall allow upload and management of supporting documents, including identity documents, income proof, and bank statements.
+FRD-08
+The system shall provide real-time validation feedback to the MR during data entry.
+________________________________________
+3.2 Bulk Loan Application Submission (Controlled Workflow)
+FRD-09
+The system shall support bulk loan application submission via structured file upload (e.g. Excel or CSV).
+FRD-10
+The system shall restrict bulk submission capability to authorised loan products and MR groups based on configurable business rules.
+FRD-11
+The system shall perform pre-processing validation on bulk upload files, including:
+•	Mandatory field completeness
+•	Data format validation
+•	Duplicate record detection
+FRD-12
+The system shall allow partial acceptance of bulk submissions, whereby valid records are processed and invalid records are rejected.
+FRD-13
+The system shall generate a detailed error report for rejected bulk records.
+________________________________________
+4. Application Status Tracking (FRD)
+FRD-14
+The system shall allow MRs to view real-time loan application status.
+FRD-15
+The system shall display standardised application lifecycle stages, including:
+•	Draft
+•	Submitted
+•	Under Review
+•	Additional Information Required
+•	Approved
+•	Rejected
+•	Cancelled
+FRD-16
+The system shall provide search and filtering capabilities based on application ID, customer name, status, and submission date.
+FRD-17
+The system shall display service-level indicators, including time spent in each processing stage.
+________________________________________
+5. Communication & Collaboration (FRD)
+FRD-18
+The system shall provide an internal secure messaging function for communication between MRs and FI officers.
+FRD-19
+The system shall link communications contextually to specific loan applications.
+FRD-20
+The system shall allow FI officers to request additional information or documents through the portal.
+FRD-21
+The system shall maintain a complete audit trail of all communications and document exchanges.
+________________________________________
+6. Document Management (FRD)
+FRD-22
+The system shall store all loan-related documents in a centralised repository linked to each application.
+FRD-23
+The system shall support document version control and status tagging (e.g. submitted, accepted, rejected).
+FRD-24
+The system shall enforce document access permissions based on user roles.
+________________________________________
+7. Notifications & Alerts (FRD)
+FRD-25
+The system shall generate in-portal notifications for key events, including status changes and information requests.
+FRD-26
+The system shall support configurable external notifications (e.g. email or push notifications) without exposing sensitive customer data.
+________________________________________
+8. Performance & Commission Monitoring (Optional / Configurable)
+FRD-27
+The system shall provide MRs with visibility into their loan application pipeline and performance metrics.
+FRD-28
+The system may support commission estimation and reporting, subject to contractual and regulatory constraints.
+________________________________________
+9. Compliance, Audit & Security (FRD)
+FRD-29
+The system shall log all user actions with timestamps, user IDs, and activity details.
+FRD-30
+The system shall support audit trail extraction for compliance and regulatory review.
+FRD-31
+The system shall comply with applicable data protection regulations, including PDPA requirements.
+FRD-32
+The system shall prevent unauthorised data export or sharing outside the approved channels.
+________________________________________
+10. System Integration (FRD)
+FRD-33
+The system shall integrate with the Loan Origination System (LOS) for application processing.
+FRD-34
+The system shall integrate with credit bureau and eKYC services where applicable.
+FRD-35
+The system shall support integration with document management and notification services.
+________________________________________
+11. Non-Functional Requirements (NFR)
+NFR-01
+The system shall support concurrent access by multiple MRs without performance degradation.
+NFR-02
+The system shall ensure high availability and data integrity.
+NFR-03
+The system shall provide configurable parameters to support new loan products and campaigns without code changes.
+________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Below is a Figma-ready screen design layout for Section 2: Core Functional Modules of the MR / Sales Agent Portal.
+This is structured exactly how a UX designer or product team would implement it in Figma: frames, components, layout hierarchy, and key UI elements.
+________________________________________
+A. Global Layout (Applies to All Screens)
+Frame: MR Portal – App Shell
+Layout
+•	Left Sidebar (Fixed, 240px)
+•	Top Bar (Fixed, 64px)
+•	Main Content Area (Scrollable)
+________________________________________
+Left Sidebar – Navigation
+Components
+•	Logo (FI / Portal branding)
+•	Dashboard
+•	Loan Applications
+o	Single Application
+o	Bulk Upload (conditional visibility)
+•	Messages
+•	Documents
+•	Performance & Commission
+•	Notifications
+•	Profile & Settings
+Best practice: Greyed-out menu items if MR not authorised (RBAC).
+________________________________________
+Top Bar
+Components
+•	Search (Application ID / Customer)
+•	Notifications Bell (badge count)
+•	User Avatar
+o	Role
+o	Logout
+________________________________________
+B. Screen Designs by Core Functional Module
+________________________________________
+2.1 Authentication & Access Control
+Screen: Login
+Frame Elements
+•	Portal Logo
+•	Email / Agent ID
+•	Password
+•	Login CTA
+•	“Forgot Password”
+•	Secondary: OTP / 2FA modal (overlay)
+________________________________________
+Screen: First-Time Login / Access Info
+•	Assigned products
+•	Allowed submission modes (Single / Bulk)
+•	Compliance acknowledgement checkbox
+________________________________________
+2.2 Loan Application Submission
+________________________________________
+2.2.1 Single Loan Application (Primary Flow)
+Screen: New Application – Step 1 (Customer Info)
+Layout
+•	Stepper (Top Horizontal):
+1.	Customer
+2.	Financing Details
+3.	Documents
+4.	Review & Submit
+Fields
+•	Customer Name
+•	ID Type & Number
+•	Contact No
+•	Email
+•	Employment Type
+Actions
+•	Save Draft
+•	Next
+________________________________________
+Screen: New Application – Step 2 (Financing Details)
+Fields
+•	Product Type (dropdown)
+•	Requested Amount
+•	Tenure
+•	Indicative Instalment (auto-calculated)
+•	Purpose of Financing
+Right Panel (Sticky)
+•	Eligibility Indicator
+o	Green / Amber / Red
+•	Warnings (soft stop)
+________________________________________
+Screen: New Application – Step 3 (Documents)
+Components
+•	Document checklist (left)
+•	Upload card (right)
+o	Drag & drop
+o	File size/type rules
+•	Status tag per document:
+o	Uploaded
+o	Pending
+o	Rejected
+________________________________________
+Screen: Review & Submit
+•	Read-only summary
+•	Consent checkbox
+•	Submit CTA
+•	Confirmation modal
+________________________________________
+2.2.2 Bulk Loan Application (Controlled)
+Screen: Bulk Upload – Landing
+Components
+•	Eligibility notice (product & MR tier)
+•	Download Template CTA
+•	Upload File CTA
+________________________________________
+Screen: Bulk Upload – Validation Result
+Table Columns
+•	Row No
+•	Customer Name
+•	ID
+•	Status (Valid / Error)
+•	Error Message
+Actions
+•	Submit Valid Records
+•	Download Error Report
+________________________________________
+Screen: Bulk Submission Summary
+•	Total records
+•	Accepted
+•	Rejected
+•	Processing status
+________________________________________
+2.3 Application Status Tracking
+Screen: Application List
+Table View
+Columns:
+•	Application ID
+•	Customer Name
+•	Product
+•	Amount
+•	Status
+•	SLA Timer
+•	Last Updated
+•	Action (View)
+Filters
+•	Status
+•	Date range
+•	Product
+•	Submission mode
+________________________________________
+Screen: Application Detail – Timeline View
+Left Panel
+•	Application Summary Card
+Main Panel
+•	Status Timeline:
+o	Submitted
+o	Under Review
+o	Info Requested
+o	Decision
+________________________________________
+2.4 Communication & Collaboration
+Screen: Messages – Application Context
+Layout
+•	Left: Application list
+•	Right: Chat panel
+Chat Components
+•	Message bubbles (MR vs FI Officer)
+•	System messages (highlighted)
+•	Attachment upload
+•	Read receipts
+________________________________________
+Screen: Info Request Alert
+•	Highlighted document request
+•	Direct “Upload Now” CTA
+________________________________________
+2.5 Document Management
+Screen: Document Repository
+Table Columns
+•	Document Name
+•	Type
+•	Status
+•	Version
+•	Uploaded Date
+•	Action (View / Replace)
+Preview Panel
+•	Inline PDF/Image preview
+________________________________________
+2.6 Notifications & Alerts
+Screen: Notification Center
+List Items
+•	Status change
+•	Info request
+•	Approval / rejection
+Properties
+•	Read / Unread
+•	Linked to application
+________________________________________
+2.7 Commission & Performance Tracking
+Screen: Performance Dashboard
+Widgets
+•	Applications Submitted
+•	Approval Rate
+•	Disbursed Amount
+•	Avg Turnaround Time
+________________________________________
+Screen: Commission Statement
+Table
+•	Application ID
+•	Disbursement Date
+•	Commission Rate
+•	Amount
+•	Status
+________________________________________
+2.8 Compliance & Audit Controls
+Screen: Activity Log (Read-only)
+Table
+•	Date & Time
+•	Action
+•	Application ID
+•	Performed By
+•	IP / Device
+________________________________________
+C. Figma Component Library (Recommended)
+Shared Components
+•	Buttons (Primary / Secondary / Disabled)
+•	Status Tags
+•	Form Inputs
+•	Upload Cards
+•	Tables
+•	Modals
+•	Stepper
+________________________________________
+D. Handoff Notes for Figma Designer
+•	Use Auto Layout for all forms and tables
+•	Design with RBAC states (enabled/disabled)
+•	Mobile responsiveness: Tablet minimum
+•	Accessibility: contrast, error messaging
+________________________________________
+
