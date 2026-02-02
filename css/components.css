@@ -1,6 +1,9 @@
 /* Layout Structure */
 .app-layout {
     min-height: 100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Sidebar */
@@ -102,6 +105,8 @@
     flex-direction: column;
     min-width: 0;
     transition: margin-left 0.3s ease;
+    flex: 1;
+    height: 100%;
 }
 
 /* Responsive Laptop Adjustment */
@@ -198,8 +203,13 @@
 
 /* Content Pages */
 .page-content {
-    padding: var(--spacing-lg);
+    padding: 0;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    min-height: 0;
+    height: 100%;
 }
 
 /* Dashboard Widgets */

@@ -321,12 +321,17 @@ var app = {
 
     init: function () {
         console.log('MR Portal Initialized');
-        // Show login screen first, hide app layout
+        // Ensure app-layout is visible and login is hidden
         const loginScreen = document.getElementById('login-screen');
         const appLayout = document.getElementById('app-layout');
         
-        if (loginScreen) loginScreen.style.display = 'flex';
-        if (appLayout) appLayout.style.display = 'none';
+        if (loginScreen) loginScreen.style.display = 'none';
+        if (appLayout) appLayout.style.display = 'flex';
+        
+        // Navigate to dashboard after a small delay to ensure DOM is ready
+        setTimeout(() => {
+            this.navigate('dashboard');
+        }, 100);
     },
 
     login: function () {
@@ -342,7 +347,7 @@ var app = {
 
         setTimeout(() => {
             document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('app-layout').style.display = 'flex';
+            document.getElementById('app-layout').style.display = 'block';
             this.navigate('dashboard');
             btn.innerText = originalText;
         }, 800);
@@ -1383,6 +1388,44 @@ var app = {
         }
 
         return `<span class="badge" style="background: ${bgColor}; color: ${textColor};">${status}</span>`;
+    },
+
+    // Notification function
+    showNotification: function(message, type = 'info') {
+        // Simple notification implementation
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.textContent = message;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 16px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-width: 300px;
+        `;
+        
+        if (type === 'success') {
+            notification.style.borderLeft = '4px solid #10b981';
+        } else if (type === 'error') {
+            notification.style.borderLeft = '4px solid #ef4444';
+        } else if (type === 'warning') {
+            notification.style.borderLeft = '4px solid #f59e0b';
+        } else {
+            notification.style.borderLeft = '4px solid #3b82f6';
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 3000);
     },
 
     // Helper: Get Action Buttons Based on Status

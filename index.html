@@ -17,12 +17,15 @@
     <!-- Styles -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
+
+    <!-- App Script -->
+    <script src="js/app.js" defer></script>
 </head>
 
 <body>
 
-    <!-- Login Screen -->
-    <div id="login-screen" class="login-screen">
+    <!-- Login Screen (Initially Visible) -->
+    <div id="login-screen" class="login-screen" style="display: flex;">
         <div class="login-card">
             <div class="login-header">
                 <div class="login-brand">
@@ -47,14 +50,14 @@
                     <label style="display: flex; gap: 8px; align-items: center; font-weight: 400; margin: 0;">
                         <input type="checkbox" style="width: auto;"> Remember me
                     </label>
-                    <a href="#" onclick="alert('Password reset link sent to your email.')">Forgot Password?</a>
+                    <a href="#" id="forgot-password-link">Forgot Password?</a>
                 </div>
-                <button class="btn btn-primary btn-full" onclick="app.login()">Sign In</button>
+                <button class="btn btn-primary btn-full" id="sign-in-btn">Sign In</button>
             </div>
         </div>
     </div>
 
-    <!-- Main App Layout (Hidden by default) -->
+    <!-- Main App Layout (Initially Hidden) -->
     <div id="app-layout" class="app-layout" style="display: none;">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -68,31 +71,31 @@
 
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" onclick="app.navigate('dashboard')">
+                    <a href="#" class="nav-link active" data-navigate="dashboard">
                         <i class="ph ph-squares-four"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="app.navigate('applications')">
+                    <a href="#" class="nav-link" data-navigate="applications">
                         <i class="ph ph-upload-simple"></i>
                         <span>Bulk Upload</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="app.navigate('tracking')">
+                    <a href="#" class="nav-link" data-navigate="tracking">
                         <i class="ph ph-list-checks"></i>
                         <span>Application Tracking</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link" onclick="app.navigate('query')">
+                    <a href="#" class="nav-link" data-navigate="query">
                         <i class="ph ph-magnifying-glass"></i>
                         <span>Application Query</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link" data-navigate="performance">
                         <i class="ph ph-chart-line-up"></i>
                         <span>Performance & Commission</span>
                     </a>
@@ -100,7 +103,7 @@
             </ul>
 
             <!-- Bottom Section: Messages & Profile -->
-            <div style="padding: 0 var(--spacing-sm); margin-bottom: 8px;">
+            <div style="padding: 0 var(--spacing-sm); margin-bottom: 8px; display: none;">
                 <a href="#" class="nav-link" style="color: #94a3b8;">
                     <i class="ph ph-envelope-simple"></i>
                     <span>Messages</span>
@@ -114,8 +117,8 @@
                     <div style="font-weight: 500; font-size: 0.9rem;">David Agent</div>
                     <div style="font-size: 0.75rem; color: #94a3b8;">Senior MR</div>
                 </div>
-                <div title="Sign Out" onclick="app.logout()">
-                    <i class="ph ph-sign-out" style="cursor: pointer; color: #ef4444;"></i>
+                <div title="Sign Out" id="sign-out-btn" style="cursor: pointer;">
+                    <i class="ph ph-sign-out" style="color: #ef4444;"></i>
                 </div>
             </div>
         </aside>
@@ -135,7 +138,6 @@
                     </div>
                     <button class="icon-btn">
                         <i class="ph ph-bell" style="font-size: 1.25rem;"></i>
-                        <span class="badge-dot"></span>
                     </button>
                     <button class="icon-btn">
                         <i class="ph ph-gear" style="font-size: 1.25rem;"></i>
@@ -150,7 +152,6 @@
         </div>
     </div>
 
-    <script src="js/app.js"></script>
 </body>
 
 </html>
