@@ -19,14 +19,14 @@ var app = {
                 uploadRefNumber: 'UPL20260128-002',
                 fileName: 'auto_loans_jan.xlsx',
                 noOfApplications: 8,
-                status: 'Pending Submission to Bank',
+                status: 'Pending Submission',
                 uploadedDateTime: 'Jan 28, 2026, 09:15 AM'
             },
             {
                 uploadRefNumber: 'UPL20260125-001',
                 fileName: 'personal_loans_batch1.csv',
                 noOfApplications: 12,
-                status: 'Pending Documents Upload',
+                status: 'Uploaded',
                 uploadedDateTime: 'Jan 25, 2026, 02:20 PM'
             },
             {
@@ -323,12 +323,73 @@ var app = {
 
     init: function () {
         console.log('MR Portal Initialized');
-        // Show login screen first, hide app layout
+        // Show login screen first, hide app layout and MFA screen
         const loginScreen = document.getElementById('login-screen');
         const appLayout = document.getElementById('app-layout');
+        const mfaScreen = document.getElementById('mfa-screen');
         
         if (loginScreen) loginScreen.style.display = 'flex';
         if (appLayout) appLayout.style.display = 'none';
+        if (mfaScreen) mfaScreen.style.display = 'none';
+    },
+
+    // Shared metrics calculation function
+    calculateMetrics: function() {
+        const apps = this.state.applications;
+        const totalSubmitted = apps.filter(a => a.loan.submissionDate !== null).length;
+        const approved = apps.filter(a => a.loan.status === 'Approved').length;
+        const pending = apps.filter(a => a.loan.status === 'Under Review' || a.loan.status === 'Submitted').length;
+        const additionalInfo = apps.filter(a => a.loan.status === 'Additional Info Required').length;
+        const rejected = apps.filter(a => a.loan.status === 'Rejected').length;
+        
+        const approvalRate = totalSubmitted > 0 ? ((approved / totalSubmitted) * 100).toFixed(1) : 0;
+        const rejectionRate = totalSubmitted > 0 ? ((rejected / totalSubmitted) * 100).toFixed(1) : 0;
+        
+        // Commission calculations
+        const approvedApps = apps.filter(a => a.loan.status === 'Approved');
+        const commissionRates = {
+            'Personal-i': 1.5,
+            'Home Reno': 2.0,
+            'Biz Micro': 2.5,
+            'Car Loan': 1.8,
+            'Personal': 1.5,
+            'Housing Loan': 2.2
+        };
+        
+        let totalMTDCommission = 0;
+        let totalYTDCommission = 0;
+        let commissionByProduct = {};
+        
+        approvedApps.forEach(app => {
+            const product = app.loan.product;
+            const amountStr = app.loan.amountApproved || app.loan.amountRequested;
+            const amount = parseFloat(amountStr.replace(/[RM,\s]/g, ''));
+            const rate = commissionRates[product] || 1.5;
+            const commission = (amount * rate) / 100;
+            
+            totalMTDCommission += commission;
+            totalYTDCommission += commission; // For demo, assuming MTD = YTD
+            
+            if (!commissionByProduct[product]) {
+                commissionByProduct[product] = { count: 0, commission: 0 };
+            }
+            commissionByProduct[product].count++;
+            commissionByProduct[product].commission += commission;
+        });
+        
+        return {
+            totalSubmitted,
+            approved,
+            pending: pending + additionalInfo, // Combine pending and additional info
+            additionalInfo, // Keep separate for display
+            rejected,
+            approvalRate,
+            rejectionRate,
+            totalMTDCommission,
+            totalYTDCommission,
+            commissionByProduct,
+            approvedApps
+        };
     },
 
     login: function () {
@@ -393,15 +454,15 @@ var app = {
         const pin = pinInput.value.trim();
         const originalText = btn.innerText;
         
-        if (pin.length !== 4) {
-            this.showMfaError('Please enter a 4-digit PIN');
+        if (pin.length !== 6) {
+            this.showMfaError('Please enter a 6-digit PIN');
             return;
         }
         
         btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Verifying...';
         
         setTimeout(() => {
-            if (pin === '0000') {
+            if (pin === '000000') {
                 // Correct PIN - proceed to dashboard
                 clearInterval(this.state.mfaTimer);
                 document.getElementById('mfa-screen').style.display = 'none';
@@ -471,62 +532,6 @@ var app = {
         
         const errorMsg = document.getElementById('mfa-error');
         if (errorMsg) errorMsg.remove();
-    },
-
-    // Notification dropdown functions
-    toggleNotificationsDropdown: function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        
-        const dropdown = document.getElementById('notifications-dropdown');
-        if (!dropdown) return;
-        
-        const isVisible = dropdown.style.display === 'block';
-        
-        if (isVisible) {
-            dropdown.classList.remove('show');
-            setTimeout(() => {
-                dropdown.style.display = 'none';
-            }, 200);
-        } else {
-            dropdown.style.display = 'block';
-            setTimeout(() => {
-                dropdown.classList.add('show');
-            }, 10);
-        }
-    },
-
-    closeNotificationsDropdown: function () {
-        const dropdown = document.getElementById('notifications-dropdown');
-        if (dropdown) {
-            dropdown.classList.remove('show');
-            setTimeout(() => {
-                dropdown.style.display = 'none';
-            }, 200);
-        }
-    },
-
-    markAllNotificationsRead: function () {
-        // Update notification badge
-        const badge = document.querySelector('.notification-badge');
-        if (badge) {
-            badge.textContent = '0';
-            badge.style.display = 'none';
-        }
-        
-        // Update notification count
-        const count = document.querySelector('.notification-count');
-        if (count) {
-            count.textContent = 'No new notifications';
-        }
-        
-        // Remove unread styling from all notifications
-        document.querySelectorAll('.notification-item.unread').forEach(item => {
-            item.classList.remove('unread');
-        });
-        
-        // Show success message
-        alert('All notifications marked as read');
     },
 
     logout: function () {
@@ -604,6 +609,8 @@ var app = {
 
     views: {
         dashboard: function () {
+            const metrics = app.calculateMetrics();
+            
             return `
                 <div class="page-wrapper">
                     <div class="flex justify-between items-center" style="margin-bottom: 24px;">
@@ -613,23 +620,23 @@ var app = {
                     <div class="kpi-grid">
                         <div class="card kpi-card">
                             <span class="kpi-label">Submitted</span>
-                            <span class="kpi-value">45</span>
+                            <span class="kpi-value">${metrics.totalSubmitted}</span>
                             <span class="kpi-trend trend-up"><i class="ph ph-check-circle"></i> This Month</span>
                         </div>
                         <div class="card kpi-card">
                             <span class="kpi-label">Approved</span>
-                            <span class="kpi-value text-success">32</span>
-                            <span class="kpi-trend trend-up"><i class="ph ph-trend-up"></i> 71% Rate</span>
+                            <span class="kpi-value text-success">${metrics.approved}</span>
+                            <span class="kpi-trend trend-up"><i class="ph ph-trend-up"></i> ${metrics.approvalRate}% Rate</span>
                         </div>
                         <div class="card kpi-card">
-                            <span class="kpi-label">Pending</span>
-                            <span class="kpi-value" style="color: var(--warning-color)">8</span>
+                            <span class="kpi-label">Processing</span>
+                            <span class="kpi-value" style="color: var(--warning-color)">${metrics.pending}</span>
                             <span class="kpi-trend"><i class="ph ph-clock"></i> In Progress</span>
                         </div>
                         <div class="card kpi-card">
                             <span class="kpi-label">Rejected</span>
-                            <span class="kpi-value" style="color: var(--danger-color)">5</span>
-                            <span class="kpi-trend trend-down"><i class="ph ph-x-circle"></i> 11% Rate</span>
+                            <span class="kpi-value" style="color: var(--danger-color)">${metrics.rejected}</span>
+                            <span class="kpi-trend trend-down"><i class="ph ph-x-circle"></i> ${metrics.rejectionRate}% Rate</span>
                         </div>
                     </div>
 
@@ -1359,68 +1366,46 @@ var app = {
         },
 
         performance: function () {
-            // Calculate metrics
-            const apps = app.state.applications;
-            const totalSubmitted = apps.filter(a => a.loan.submissionDate !== null).length;
-            const approved = apps.filter(a => a.loan.status === 'Approved').length;
-            const pending = apps.filter(a => a.loan.status === 'Under Review' || a.loan.status === 'Submitted').length;
-            const additionalInfo = apps.filter(a => a.loan.status === 'Additional Info Required').length;
-            const rejected = apps.filter(a => a.loan.status === 'Rejected').length;
+            const metrics = app.calculateMetrics();
             
-            const approvalRate = totalSubmitted > 0 ? ((approved / totalSubmitted) * 100).toFixed(1) : 0;
-            
-            const approvedApps = apps.filter(a => a.loan.status === 'Approved');
-            const commissionRates = {
-                'Personal-i': 1.5,
-                'Home Reno': 2.0,
-                'Biz Micro': 2.5,
-                'Car Loan': 1.8,
-                'Personal': 1.5,
-                'Housing Loan': 2.2
-            };
-            
-            let totalMTDCommission = 0;
-            let totalYTDCommission = 0;
-            let commissionByProduct = {};
-            
-            approvedApps.forEach(app => {
-                const amount = parseFloat(app.loan.amountRequested.replace(/[RM,]/g, ''));
-                const rate = commissionRates[app.loan.product] || 1.5;
+            // Create commission table rows using shared metrics
+            const commissionTableRows = metrics.approvedApps.length > 0 ? metrics.approvedApps.map(app => {
+                const product = app.loan.product;
+                const amountStr = app.loan.amountApproved || app.loan.amountRequested;
+                const amount = parseFloat(amountStr.replace(/[RM,\s]/g, ''));
+                const commissionRates = {
+                    'Personal-i': 1.5,
+                    'Home Reno': 2.0,
+                    'Biz Micro': 2.5,
+                    'Car Loan': 1.8,
+                    'Personal': 1.5,
+                    'Housing Loan': 2.2
+                };
+                const rate = commissionRates[product] || 1.5;
                 const commission = (amount * rate) / 100;
                 
-                totalMTDCommission += commission;
-                totalYTDCommission += commission * 1.3;
-                
-                if (!commissionByProduct[app.loan.product]) {
-                    commissionByProduct[app.loan.product] = 0;
-                }
-                commissionByProduct[app.loan.product] += commission;
-            });
+                return `<tr><td style="font-weight: 500;">${app.uploadRefNumber}</td><td style="font-weight: 500;">${app.id}</td><td>${app.customer.fullName}</td><td>${app.loan.product}</td><td>RM ${commission.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td style="text-align: center;"><span class="badge badge-success">Paid</span></td></tr>`;
+            }).join('') : '<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 24px;">No commission data available</td></tr>';
             
+            // Create conversion funnel HTML using metrics
+            const conversionFunnelHtml = [
+                { label: 'Uploaded', count: app.state.applications.length, color: '#e0e7ff' },
+                { label: 'Submitted', count: metrics.totalSubmitted, color: '#e0f2fe' },
+                { label: 'Approved', count: metrics.approved, color: '#d1fae5' },
+                { label: 'Funded', count: metrics.approved, color: '#fef3c7' }
+            ].map((step, i) => {
+                const percentage = i === 0 ? 100 : (step.count / app.state.applications.length * 100).toFixed(0);
+                return `<div><div style="display: flex; justify-content: space-between; margin-bottom: 6px;"><span style="font-weight: 500; font-size: 0.9rem;">${step.label}</span><span style="color: #64748b; font-size: 0.85rem;">${step.count} (${percentage}%)</span></div><div style="height: 24px; background: #e2e8f0; border-radius: 4px; overflow: hidden;"><div style="height: 100%; width: ${percentage}%; background: ${step.color}; transition: all 0.3s;"></div></div></div>`;
+            }).join('');
+            
+            // Create top products HTML using metrics
             const productCounts = {};
-            apps.forEach(a => {
+            app.state.applications.forEach(a => {
                 if (!productCounts[a.loan.product]) {
                     productCounts[a.loan.product] = 0;
                 }
                 productCounts[a.loan.product]++;
             });
-            
-            const commissionRows = apps.filter(a => a.loan.status === 'Approved').map(a => {
-                const amount = parseFloat(a.loan.amountRequested.replace(/[RM,]/g, ''));
-                const rate = commissionRates[a.loan.product] || 1.5;
-                const commission = (amount * rate) / 100;
-                return { app: a, amount: amount, rate: rate, commission: commission };
-            });
-            
-            const conversionFunnelHtml = [
-                { label: 'Uploaded', count: apps.length, color: '#e0e7ff' },
-                { label: 'Submitted', count: totalSubmitted, color: '#e0f2fe' },
-                { label: 'Approved', count: approved, color: '#d1fae5' },
-                { label: 'Funded', count: approved, color: '#fef3c7' }
-            ].map((step, i) => {
-                const percentage = i === 0 ? 100 : (step.count / apps.length * 100).toFixed(0);
-                return `<div><div style="display: flex; justify-content: space-between; margin-bottom: 6px;"><span style="font-weight: 500; font-size: 0.9rem;">${step.label}</span><span style="color: #64748b; font-size: 0.85rem;">${step.count} (${percentage}%)</span></div><div style="height: 24px; background: #e2e8f0; border-radius: 4px; overflow: hidden;"><div style="height: 100%; width: ${percentage}%; background: ${step.color}; transition: all 0.3s;"></div></div></div>`;
-            }).join('');
             
             const topProductsHtml = Object.entries(productCounts)
                 .sort(([,a], [,b]) => b - a)
@@ -1431,12 +1416,11 @@ var app = {
                     return `<div><div style="display: flex; justify-content: space-between; margin-bottom: 6px;"><span style="font-weight: 500; font-size: 0.9rem;">${product}</span><span style="color: #64748b; font-size: 0.85rem;">${count} applications</span></div><div style="height: 20px; background: #e2e8f0; border-radius: 4px; overflow: hidden;"><div style="height: 100%; width: ${percentage}%; background: #8b5cf6; transition: all 0.3s;"></div></div></div>`;
                 }).join('');
             
-            const commissionByProductHtml = Object.entries(commissionByProduct)
-                .sort(([,a], [,b]) => b - a)
-                .map(([product, amount]) => `<div style="padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;"><div style="color: #64748b; font-size: 0.85rem; margin-bottom: 8px;">${product}</div><div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">RM ${amount.toFixed(2)}</div></div>`)
+            // Create commission by product HTML using metrics
+            const commissionByProductHtml = Object.entries(metrics.commissionByProduct)
+                .sort(([,a], [,b]) => b.commission - a.commission)
+                .map(([product, data]) => `<div style="padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;"><div style="color: #64748b; font-size: 0.85rem; margin-bottom: 8px;">${product}</div><div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">RM ${data.commission.toFixed(2)}</div></div>`)
                 .join('');
-            
-            const commissionTableRows = commissionRows.length > 0 ? commissionRows.map(row => `<tr><td style="font-weight: 500;">${row.app.uploadRefNumber}</td><td style="font-weight: 500;">${row.app.id}</td><td>${row.app.customer.fullName}</td><td>${row.app.loan.product}</td><td>RM ${row.amount.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td style="text-align: center;">${row.rate}%</td><td style="font-weight: 600; color: #10b981;">RM ${row.commission.toFixed(2)}</td><td>${row.app.loan.submissionDate || '-'}</td></tr>`).join('') : `<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 24px;">No approved applications yet.</td></tr>`;
             
             return `
                 <div class="page-wrapper">
@@ -1446,46 +1430,46 @@ var app = {
                 <div class="kpi-grid">
                     <div class="card kpi-card">
                         <span class="kpi-label">Total Submitted</span>
-                        <span class="kpi-value">${totalSubmitted}</span>
-                        <span class="kpi-trend trend-up"><i class="ph ph-trending-up"></i> ${totalSubmitted > 0 ? '+5' : '0'} This Month</span>
+                        <span class="kpi-value">${metrics.totalSubmitted}</span>
+                        <span class="kpi-trend trend-up"><i class="ph ph-trending-up"></i> ${metrics.totalSubmitted > 0 ? '+5' : '0'} This Month</span>
                     </div>
                     <div class="card kpi-card">
                         <span class="kpi-label">Approved</span>
-                        <span class="kpi-value text-success">${approved}</span>
-                        <span class="kpi-trend trend-up"><i class="ph ph-check-circle"></i> ${approvalRate}% Rate</span>
+                        <span class="kpi-value text-success">${metrics.approved}</span>
+                        <span class="kpi-trend trend-up"><i class="ph ph-check-circle"></i> ${metrics.approvalRate}% Rate</span>
                     </div>
                     <div class="card kpi-card">
-                        <span class="kpi-label">Pending / Under Review</span>
-                        <span class="kpi-value" style="color: var(--warning-color)">${pending}</span>
+                        <span class="kpi-label">Processing</span>
+                        <span class="kpi-value" style="color: var(--warning-color)">${metrics.pending}</span>
                         <span class="kpi-trend"><i class="ph ph-clock"></i> In Progress</span>
                     </div>
                     <div class="card kpi-card">
                         <span class="kpi-label">Additional Info Required</span>
-                        <span class="kpi-value" style="color: var(--warning-color)">${additionalInfo}</span>
+                        <span class="kpi-value" style="color: var(--warning-color)">${metrics.additionalInfo}</span>
                         <span class="kpi-trend"><i class="ph ph-warning"></i> Needs Action</span>
                     </div>
                     <div class="card kpi-card">
                         <span class="kpi-label">Rejected</span>
-                        <span class="kpi-value" style="color: var(--danger-color)">${rejected}</span>
-                        <span class="kpi-trend trend-down"><i class="ph ph-x-circle"></i> ${rejected > 0 ? totalSubmitted > 0 ? ((rejected / totalSubmitted) * 100).toFixed(1) : '0' : '0'}%</span>
+                        <span class="kpi-value" style="color: var(--danger-color)">${metrics.rejected}</span>
+                        <span class="kpi-trend trend-down"><i class="ph ph-x-circle"></i> ${metrics.rejectionRate}%</span>
                     </div>
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin: 24px 0;">
                     <div class="card" style="border-left: 4px solid #10b981;">
                         <div style="color: #64748b; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;">Estimated Commission (MTD)</div>
-                        <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 8px;">RM ${totalMTDCommission.toFixed(2)}</div>
-                        <div style="font-size: 0.85rem; color: #64748b;">From ${approvedApps.length} approved application(s)</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 8px;">RM ${metrics.totalMTDCommission.toFixed(2)}</div>
+                        <div style="font-size: 0.85rem; color: #64748b;">From ${metrics.approvedApps.length} approved application(s)</div>
                     </div>
                     <div class="card" style="border-left: 4px solid #0284c7;">
                         <div style="color: #64748b; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;">Estimated Commission (YTD)</div>
-                        <div style="font-size: 2rem; font-weight: 700; color: #0284c7; margin-bottom: 8px;">RM ${totalYTDCommission.toFixed(2)}</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0284c7; margin-bottom: 8px;">RM ${metrics.totalYTDCommission.toFixed(2)}</div>
                         <div style="font-size: 0.85rem; color: #64748b;">Year-to-date projection</div>
                     </div>
                     <div class="card" style="border-left: 4px solid #7c3aed;">
                         <div style="color: #64748b; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;">Approval Rate</div>
-                        <div style="font-size: 2rem; font-weight: 700; color: #7c3aed; margin-bottom: 8px;">${approvalRate}%</div>
-                        <div style="font-size: 0.85rem; color: #64748b;">${approved} of ${totalSubmitted} applications</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #7c3aed; margin-bottom: 8px;">${metrics.approvalRate}%</div>
+                        <div style="font-size: 0.85rem; color: #64748b;">${metrics.approved} of ${metrics.totalSubmitted} applications</div>
                     </div>
                 </div>
                 
@@ -1536,7 +1520,7 @@ var app = {
                     </div>
                     <div style="padding: 16px 24px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; background: #f8fafc;">
                         <div style="color: #64748b; font-size: 0.9rem;">
-                            <strong>Total Commission (Approved)</strong>: RM ${totalMTDCommission.toFixed(2)}
+                            <strong>Total Commission (Approved)</strong>: RM ${metrics.totalMTDCommission.toFixed(2)}
                         </div>
                         <button class="btn btn-outline" onclick="alert('Export functionality coming soon: PDF or Excel report of your commission details.')">
                             <i class="ph ph-download-simple"></i> Export Report
@@ -1576,45 +1560,38 @@ var app = {
 
     // Helper: Get Action Buttons Based on Status
     getActionButtons: function (status) {
-        let uploadDisabled = '';
-        let submitDisabled = '';
-        let cancelDisabled = '';
-        let submitClass = 'btn btn-outline';
-        let uploadStyle = 'padding: 6px 12px; font-size: 0.85rem;';
-        let submitStyle = 'padding: 6px 12px; font-size: 0.85rem;';
-        let cancelStyle = 'padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;';
-        
-        // Determine which buttons should be disabled based on status
-        if (status === 'Pending Documents Upload') {
-            // Upload Doc and Cancel are enabled, Submit is disabled
-            submitDisabled = 'disabled';
-            submitStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
-        } else if (status === 'Pending Submission to Bank') {
-            // All buttons are enabled, Submit becomes primary
-            submitClass = 'btn btn-primary';
+        let buttons = '';
+
+        if (status === 'Uploaded') {
+            buttons = `
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.uploadDoc('${status}')">
+                        <i class="ph ph-paperclip"></i> Upload Doc
+                    </button>
+                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;" onclick="app.cancelUpload()">
+                        <i class="ph ph-x"></i> Cancel
+                    </button>
+                </div>
+            `;
+        } else if (status === 'Pending Submission') {
+            buttons = `
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.uploadDoc('${status}')">
+                        <i class="ph ph-paperclip"></i> Upload Doc
+                    </button>
+                    <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.submitToBank()">
+                        <i class="ph ph-paper-plane"></i> Submit
+                    </button>
+                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;" onclick="app.cancelUpload()">
+                        <i class="ph ph-x"></i> Cancel
+                    </button>
+                </div>
+            `;
         } else if (status === 'Submitted to Bank' || status === 'Cancelled') {
-            // All buttons are disabled
-            uploadDisabled = 'disabled';
-            submitDisabled = 'disabled';
-            cancelDisabled = 'disabled';
-            uploadStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
-            submitStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
-            cancelStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
+            buttons = `<span style="color: var(--text-muted); font-size: 0.85rem;">No actions available</span>`;
         }
 
-        return `
-            <div style="display: flex; gap: 8px;">
-                <button class="btn btn-outline" style="${uploadStyle}" onclick="app.uploadDoc('${status}')" ${uploadDisabled}>
-                    <i class="ph ph-paperclip"></i> Upload Doc
-                </button>
-                <button class="${submitClass}" style="${submitStyle}" onclick="app.submitToBank()" ${submitDisabled}>
-                    <i class="ph ph-paper-plane"></i> Submit
-                </button>
-                <button class="btn btn-outline" style="${cancelStyle}" onclick="app.cancelUpload()" ${cancelDisabled}>
-                    <i class="ph ph-x"></i> Cancel
-                </button>
-            </div>
-        `;
+        return buttons;
     },
 
     // Helper: Filter Tracking by Upload Reference Number
@@ -1927,37 +1904,6 @@ function initializeApp() {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
     }
-    
-    // Notification dropdown event listeners
-    const notificationsBtn = document.getElementById('notifications-btn');
-    if (notificationsBtn) {
-        notificationsBtn.addEventListener('click', (e) => {
-            app.toggleNotificationsDropdown(e);
-        });
-    }
-    
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        const dropdown = document.getElementById('notifications-dropdown');
-        const btn = document.getElementById('notifications-btn');
-        
-        if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
-            app.closeNotificationsDropdown();
-        }
-    });
-    
-    // Mark all as read button
-    document.addEventListener('click', (e) => {
-        if (e.target.textContent === 'Mark All as Read') {
-            e.preventDefault();
-            app.markAllNotificationsRead();
-        }
-        
-        if (e.target.textContent === 'View All') {
-            e.preventDefault();
-            alert('View All Notifications functionality would open a dedicated notifications page');
-        }
-    });
     
     // Bind navigation links in sidebar
     document.querySelectorAll('[data-navigate]').forEach(link => {
