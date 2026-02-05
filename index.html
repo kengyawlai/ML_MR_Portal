@@ -57,6 +57,37 @@
         </div>
     </div>
 
+    <!-- MFA Screen (Initially Hidden) -->
+    <div id="mfa-screen" class="login-screen" style="display: none;">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-brand">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" />
+                    </svg>
+                    <span>ML MR Portal</span>
+                </div>
+                <p style="color: #64748b; font-size: 0.9rem;">Multi-Factor Authentication</p>
+                <p style="color: #374151; font-size: 0.85rem; margin-top: 8px;">Please enter the 4-digit PIN sent to your registered device</p>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label>4-Digit PIN</label>
+                    <input type="text" id="mfa-pin" placeholder="Enter PIN" maxlength="4" style="text-align: center; font-size: 1.2rem; letter-spacing: 0.5em;">
+                </div>
+                <div style="text-align: center; margin: 16px 0;">
+                    <p style="color: #64748b; font-size: 0.85rem;">Code expires in: <span id="countdown-timer" style="color: #ef4444; font-weight: 600;">60</span> seconds</p>
+                    <button id="resend-code" class="btn btn-outline" style="font-size: 0.8rem; padding: 4px 12px; margin-top: 8px;" disabled>
+                        Resend Code
+                    </button>
+                </div>
+                <button class="btn btn-primary btn-full" id="verify-pin-btn">Verify PIN</button>
+                <button class="btn btn-outline btn-full" id="back-to-login-btn" style="margin-top: 8px;">Back to Login</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Main App Layout (Initially Hidden) -->
     <div id="app-layout" class="app-layout" style="display: none;">
         <!-- Sidebar -->
@@ -136,9 +167,75 @@
                         <input type="text" placeholder="Search application ID..."
                             style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9rem; width: 240px; background: #f8fafc;">
                     </div>
-                    <button class="icon-btn">
-                        <i class="ph ph-bell" style="font-size: 1.25rem;"></i>
-                    </button>
+                    <div style="position: relative;">
+                        <button class="icon-btn" id="notifications-btn">
+                            <i class="ph ph-bell" style="font-size: 1.25rem;"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                        <!-- Notifications Dropdown -->
+                        <div id="notifications-dropdown" class="notifications-dropdown" style="display: none;">
+                            <div class="notifications-header">
+                                <h4>Notifications</h4>
+                                <span class="notification-count">3 new</span>
+                            </div>
+                            <div class="notifications-list">
+                                <div class="notification-item unread">
+                                    <div class="notification-icon success">
+                                        <i class="ph ph-check-circle"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <p class="notification-title">Application Approved</p>
+                                        <p class="notification-text">Application #APP-2023-889 has been approved by the bank.</p>
+                                        <span class="notification-time">2 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread">
+                                    <div class="notification-icon warning">
+                                        <i class="ph ph-warning"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <p class="notification-title">Additional Documents Required</p>
+                                        <p class="notification-text">Application #APP-2023-892 requires additional income documentation.</p>
+                                        <span class="notification-time">15 minutes ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread">
+                                    <div class="notification-icon info">
+                                        <i class="ph ph-info"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <p class="notification-title">Bulk Upload Complete</p>
+                                        <p class="notification-text">Your bulk upload UPL20260130-001 has been processed successfully.</p>
+                                        <span class="notification-time">1 hour ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-icon info">
+                                        <i class="ph ph-gear"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <p class="notification-title">System Maintenance</p>
+                                        <p class="notification-text">Scheduled maintenance on Feb 3 from 11 PM to 2 AM.</p>
+                                        <span class="notification-time">2 hours ago</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-icon success">
+                                        <i class="ph ph-upload"></i>
+                                    </div>
+                                    <div class="notification-content">
+                                        <p class="notification-title">Document Upload Successful</p>
+                                        <p class="notification-text">Documents for application #APP-2023-894 uploaded successfully.</p>
+                                        <span class="notification-time">3 hours ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notifications-footer">
+                                <button class="btn btn-outline btn-sm">Mark All as Read</button>
+                                <button class="btn btn-outline btn-sm">View All</button>
+                            </div>
+                        </div>
+                    </div>
                     <button class="icon-btn">
                         <i class="ph ph-gear" style="font-size: 1.25rem;"></i>
                     </button>

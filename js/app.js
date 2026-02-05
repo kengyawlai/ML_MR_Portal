@@ -5,6 +5,8 @@ var app = {
         formData: {},
         selectedApplicationId: null,
         filterByUploadRef: null,
+        mfaCountdown: 60,
+        mfaTimer: null,
         bulkUploads: [
             {
                 uploadRefNumber: 'UPL20260130-001',
@@ -17,14 +19,14 @@ var app = {
                 uploadRefNumber: 'UPL20260128-002',
                 fileName: 'auto_loans_jan.xlsx',
                 noOfApplications: 8,
-                status: 'Pending Submission',
+                status: 'Pending Bank Submission',
                 uploadedDateTime: 'Jan 28, 2026, 09:15 AM'
             },
             {
                 uploadRefNumber: 'UPL20260125-001',
                 fileName: 'personal_loans_batch1.csv',
                 noOfApplications: 12,
-                status: 'Uploaded',
+                status: 'Documents Uploaded',
                 uploadedDateTime: 'Jan 25, 2026, 02:20 PM'
             },
             {
@@ -341,17 +343,204 @@ var app = {
         btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Signing In...';
 
         setTimeout(() => {
+            // Hide login screen and show MFA screen
             document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('app-layout').style.display = 'flex';
-            this.navigate('dashboard');
+            document.getElementById('mfa-screen').style.display = 'flex';
             btn.innerText = originalText;
+            
+            // Start MFA countdown
+            this.startMfaCountdown();
+            
+            // Focus on PIN input
+            const pinInput = document.getElementById('mfa-pin');
+            if (pinInput) pinInput.focus();
         }, 800);
     },
 
+    startMfaCountdown: function () {
+        this.state.mfaCountdown = 60;
+        const timerElement = document.getElementById('countdown-timer');
+        const resendBtn = document.getElementById('resend-code');
+        
+        if (resendBtn) resendBtn.disabled = true;
+        
+        this.state.mfaTimer = setInterval(() => {
+            this.state.mfaCountdown--;
+            if (timerElement) {
+                timerElement.textContent = this.state.mfaCountdown;
+            }
+            
+            if (this.state.mfaCountdown <= 0) {
+                clearInterval(this.state.mfaTimer);
+                if (timerElement) {
+                    timerElement.textContent = '0';
+                    timerElement.style.color = '#ef4444';
+                }
+                if (resendBtn) {
+                    resendBtn.disabled = false;
+                    resendBtn.textContent = 'Resend Code';
+                }
+            }
+        }, 1000);
+    },
+
+    verifyMfaPin: function () {
+        const pinInput = document.getElementById('mfa-pin');
+        const btn = document.getElementById('verify-pin-btn');
+        
+        if (!pinInput || !btn) return;
+        
+        const pin = pinInput.value.trim();
+        const originalText = btn.innerText;
+        
+        if (pin.length !== 4) {
+            this.showMfaError('Please enter a 4-digit PIN');
+            return;
+        }
+        
+        btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Verifying...';
+        
+        setTimeout(() => {
+            if (pin === '0000') {
+                // Correct PIN - proceed to dashboard
+                clearInterval(this.state.mfaTimer);
+                document.getElementById('mfa-screen').style.display = 'none';
+                document.getElementById('app-layout').style.display = 'flex';
+                this.navigate('dashboard');
+            } else {
+                // Incorrect PIN
+                this.showMfaError('Invalid PIN. Please try again.');
+                pinInput.value = '';
+                pinInput.focus();
+            }
+            btn.innerText = originalText;
+        }, 1000);
+    },
+
+    showMfaError: function (message) {
+        const pinInput = document.getElementById('mfa-pin');
+        if (pinInput) {
+            pinInput.style.borderColor = '#ef4444';
+            pinInput.style.backgroundColor = '#fef2f2';
+            
+            // Create or update error message
+            let errorMsg = document.getElementById('mfa-error');
+            if (!errorMsg) {
+                errorMsg = document.createElement('p');
+                errorMsg.id = 'mfa-error';
+                errorMsg.style.cssText = 'color: #ef4444; font-size: 0.8rem; margin: 8px 0 0 0; text-align: center;';
+                pinInput.parentNode.appendChild(errorMsg);
+            }
+            errorMsg.textContent = message;
+            
+            // Reset styling after 3 seconds
+            setTimeout(() => {
+                pinInput.style.borderColor = '';
+                pinInput.style.backgroundColor = '';
+                if (errorMsg) errorMsg.remove();
+            }, 3000);
+        }
+    },
+
+    resendMfaCode: function () {
+        const btn = document.getElementById('resend-code');
+        if (btn) {
+            btn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Sending...';
+            setTimeout(() => {
+                btn.textContent = 'Code Sent!';
+                this.startMfaCountdown();
+                setTimeout(() => {
+                    btn.textContent = 'Resend Code';
+                }, 2000);
+            }, 1000);
+        }
+    },
+
+    backToLogin: function () {
+        clearInterval(this.state.mfaTimer);
+        document.getElementById('mfa-screen').style.display = 'none';
+        document.getElementById('login-screen').style.display = 'flex';
+        
+        // Reset MFA form
+        const pinInput = document.getElementById('mfa-pin');
+        if (pinInput) {
+            pinInput.value = '';
+            pinInput.style.borderColor = '';
+            pinInput.style.backgroundColor = '';
+        }
+        
+        const errorMsg = document.getElementById('mfa-error');
+        if (errorMsg) errorMsg.remove();
+    },
+
+    // Notification dropdown functions
+    toggleNotificationsDropdown: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const dropdown = document.getElementById('notifications-dropdown');
+        if (!dropdown) return;
+        
+        const isVisible = dropdown.style.display === 'block';
+        
+        if (isVisible) {
+            dropdown.classList.remove('show');
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+            }, 200);
+        } else {
+            dropdown.style.display = 'block';
+            setTimeout(() => {
+                dropdown.classList.add('show');
+            }, 10);
+        }
+    },
+
+    closeNotificationsDropdown: function () {
+        const dropdown = document.getElementById('notifications-dropdown');
+        if (dropdown) {
+            dropdown.classList.remove('show');
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+            }, 200);
+        }
+    },
+
+    markAllNotificationsRead: function () {
+        // Update notification badge
+        const badge = document.querySelector('.notification-badge');
+        if (badge) {
+            badge.textContent = '0';
+            badge.style.display = 'none';
+        }
+        
+        // Update notification count
+        const count = document.querySelector('.notification-count');
+        if (count) {
+            count.textContent = 'No new notifications';
+        }
+        
+        // Remove unread styling from all notifications
+        document.querySelectorAll('.notification-item.unread').forEach(item => {
+            item.classList.remove('unread');
+        });
+        
+        // Show success message
+        alert('All notifications marked as read');
+    },
+
     logout: function () {
+        // Clear MFA timer if running
+        if (this.state.mfaTimer) {
+            clearInterval(this.state.mfaTimer);
+            this.state.mfaTimer = null;
+        }
+        
         // Return to Login
         document.getElementById('app-layout').style.display = 'none';
+        document.getElementById('mfa-screen').style.display = 'none';
         document.getElementById('login-screen').style.display = 'flex';
+        
         // Reset view state if needed
         this.state.inWizard = false;
     },
@@ -1364,11 +1553,11 @@ var app = {
         let bgColor = '#d1fae5';
         let textColor = '#065f46';
 
-        if (status === 'Uploaded') {
+        if (status === 'Documents Uploaded') {
             badgeClass = 'badge-warning';
             bgColor = '#fef3c7';
             textColor = '#92400e';
-        } else if (status === 'Pending Submission') {
+        } else if (status === 'Pending Bank Submission') {
             badgeClass = 'badge-blue';
             bgColor = '#dbeafe';
             textColor = '#1e40af';
@@ -1387,38 +1576,45 @@ var app = {
 
     // Helper: Get Action Buttons Based on Status
     getActionButtons: function (status) {
-        let buttons = '';
-
-        if (status === 'Uploaded') {
-            buttons = `
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.uploadDoc('${status}')">
-                        <i class="ph ph-paperclip"></i> Upload Doc
-                    </button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;" onclick="app.cancelUpload()">
-                        <i class="ph ph-x"></i> Cancel
-                    </button>
-                </div>
-            `;
-        } else if (status === 'Pending Submission') {
-            buttons = `
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.uploadDoc('${status}')">
-                        <i class="ph ph-paperclip"></i> Upload Doc
-                    </button>
-                    <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.submitToBank()">
-                        <i class="ph ph-paper-plane"></i> Submit
-                    </button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;" onclick="app.cancelUpload()">
-                        <i class="ph ph-x"></i> Cancel
-                    </button>
-                </div>
-            `;
+        let uploadDisabled = '';
+        let submitDisabled = '';
+        let cancelDisabled = '';
+        let submitClass = 'btn btn-outline';
+        let uploadStyle = 'padding: 6px 12px; font-size: 0.85rem;';
+        let submitStyle = 'padding: 6px 12px; font-size: 0.85rem;';
+        let cancelStyle = 'padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;';
+        
+        // Determine which buttons should be disabled based on status
+        if (status === 'Documents Uploaded') {
+            // Upload Doc and Cancel are enabled, Submit is disabled
+            submitDisabled = 'disabled';
+            submitStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
+        } else if (status === 'Pending Bank Submission') {
+            // All buttons are enabled, Submit becomes primary
+            submitClass = 'btn btn-primary';
         } else if (status === 'Submitted to Bank' || status === 'Cancelled') {
-            buttons = `<span style="color: var(--text-muted); font-size: 0.85rem;">No actions available</span>`;
+            // All buttons are disabled
+            uploadDisabled = 'disabled';
+            submitDisabled = 'disabled';
+            cancelDisabled = 'disabled';
+            uploadStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
+            submitStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
+            cancelStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
         }
 
-        return buttons;
+        return `
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline" style="${uploadStyle}" onclick="app.uploadDoc('${status}')" ${uploadDisabled}>
+                    <i class="ph ph-paperclip"></i> Upload Doc
+                </button>
+                <button class="${submitClass}" style="${submitStyle}" onclick="app.submitToBank()" ${submitDisabled}>
+                    <i class="ph ph-paper-plane"></i> Submit
+                </button>
+                <button class="btn btn-outline" style="${cancelStyle}" onclick="app.cancelUpload()" ${cancelDisabled}>
+                    <i class="ph ph-x"></i> Cancel
+                </button>
+            </div>
+        `;
     },
 
     // Helper: Filter Tracking by Upload Reference Number
@@ -1690,6 +1886,78 @@ function initializeApp() {
     if (signOutBtn) {
         signOutBtn.addEventListener('click', () => app.logout());
     }
+    
+    // MFA event listeners
+    const verifyPinBtn = document.getElementById('verify-pin-btn');
+    if (verifyPinBtn) {
+        verifyPinBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            app.verifyMfaPin();
+        });
+    }
+    
+    const resendCodeBtn = document.getElementById('resend-code');
+    if (resendCodeBtn) {
+        resendCodeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            app.resendMfaCode();
+        });
+    }
+    
+    const backToLoginBtn = document.getElementById('back-to-login-btn');
+    if (backToLoginBtn) {
+        backToLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            app.backToLogin();
+        });
+    }
+    
+    // MFA PIN input - allow Enter key to verify
+    const mfaPinInput = document.getElementById('mfa-pin');
+    if (mfaPinInput) {
+        mfaPinInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                app.verifyMfaPin();
+            }
+        });
+        
+        // Only allow numbers
+        mfaPinInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+    }
+    
+    // Notification dropdown event listeners
+    const notificationsBtn = document.getElementById('notifications-btn');
+    if (notificationsBtn) {
+        notificationsBtn.addEventListener('click', (e) => {
+            app.toggleNotificationsDropdown(e);
+        });
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('notifications-dropdown');
+        const btn = document.getElementById('notifications-btn');
+        
+        if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+            app.closeNotificationsDropdown();
+        }
+    });
+    
+    // Mark all as read button
+    document.addEventListener('click', (e) => {
+        if (e.target.textContent === 'Mark All as Read') {
+            e.preventDefault();
+            app.markAllNotificationsRead();
+        }
+        
+        if (e.target.textContent === 'View All') {
+            e.preventDefault();
+            alert('View All Notifications functionality would open a dedicated notifications page');
+        }
+    });
     
     // Bind navigation links in sidebar
     document.querySelectorAll('[data-navigate]').forEach(link => {
