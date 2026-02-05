@@ -19,14 +19,14 @@ var app = {
                 uploadRefNumber: 'UPL20260128-002',
                 fileName: 'auto_loans_jan.xlsx',
                 noOfApplications: 8,
-                status: 'Pending Submission',
+                status: 'Pending Submission to Bank',
                 uploadedDateTime: 'Jan 28, 2026, 09:15 AM'
             },
             {
                 uploadRefNumber: 'UPL20260125-001',
                 fileName: 'personal_loans_batch1.csv',
                 noOfApplications: 12,
-                status: 'Uploaded',
+                status: 'Pending Documents Upload',
                 uploadedDateTime: 'Jan 25, 2026, 02:20 PM'
             },
             {
@@ -534,6 +534,62 @@ var app = {
         if (errorMsg) errorMsg.remove();
     },
 
+    // Notification dropdown functions
+    toggleNotificationsDropdown: function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        const dropdown = document.getElementById('notifications-dropdown');
+        if (!dropdown) return;
+        
+        const isVisible = dropdown.classList.contains('show');
+        
+        if (isVisible) {
+            dropdown.classList.remove('show');
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+            }, 200);
+        } else {
+            dropdown.style.display = 'block';
+            // Force reflow to ensure display change takes effect
+            dropdown.offsetHeight;
+            dropdown.classList.add('show');
+        }
+    },
+
+    closeNotificationsDropdown: function () {
+        const dropdown = document.getElementById('notifications-dropdown');
+        if (dropdown) {
+            dropdown.classList.remove('show');
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+            }, 200);
+        }
+    },
+
+    markAllNotificationsRead: function () {
+        // Update notification badge
+        const badge = document.querySelector('.notification-badge');
+        if (badge) {
+            badge.textContent = '0';
+            badge.style.display = 'none';
+        }
+        
+        // Update notification count
+        const count = document.querySelector('.notification-count');
+        if (count) {
+            count.textContent = 'No new notifications';
+        }
+        
+        // Remove unread styling from all notifications
+        document.querySelectorAll('.notification-item.unread').forEach(item => {
+            item.classList.remove('unread');
+        });
+        
+        // Show success message
+        alert('All notifications marked as read');
+    },
+
     logout: function () {
         // Clear MFA timer if running
         if (this.state.mfaTimer) {
@@ -629,8 +685,8 @@ var app = {
                             <span class="kpi-trend trend-up"><i class="ph ph-trend-up"></i> ${metrics.approvalRate}% Rate</span>
                         </div>
                         <div class="card kpi-card">
-                            <span class="kpi-label">Processing</span>
-                            <span class="kpi-value" style="color: var(--warning-color)">${metrics.pending}</span>
+                            <span class="kpi-label">Total Processing</span>
+                            <span class="kpi-value" style="color: var(--warning-color)">${metrics.pending + metrics.additionalInfo}</span>
                             <span class="kpi-trend"><i class="ph ph-clock"></i> In Progress</span>
                         </div>
                         <div class="card kpi-card">
@@ -1439,14 +1495,9 @@ var app = {
                         <span class="kpi-trend trend-up"><i class="ph ph-check-circle"></i> ${metrics.approvalRate}% Rate</span>
                     </div>
                     <div class="card kpi-card">
-                        <span class="kpi-label">Processing</span>
-                        <span class="kpi-value" style="color: var(--warning-color)">${metrics.pending}</span>
+                        <span class="kpi-label">Total Processing</span>
+                        <span class="kpi-value" style="color: var(--warning-color)">${metrics.pending + metrics.additionalInfo}</span>
                         <span class="kpi-trend"><i class="ph ph-clock"></i> In Progress</span>
-                    </div>
-                    <div class="card kpi-card">
-                        <span class="kpi-label">Additional Info Required</span>
-                        <span class="kpi-value" style="color: var(--warning-color)">${metrics.additionalInfo}</span>
-                        <span class="kpi-trend"><i class="ph ph-warning"></i> Needs Action</span>
                     </div>
                     <div class="card kpi-card">
                         <span class="kpi-label">Rejected</span>
@@ -1560,38 +1611,45 @@ var app = {
 
     // Helper: Get Action Buttons Based on Status
     getActionButtons: function (status) {
-        let buttons = '';
-
-        if (status === 'Uploaded') {
-            buttons = `
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.uploadDoc('${status}')">
-                        <i class="ph ph-paperclip"></i> Upload Doc
-                    </button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;" onclick="app.cancelUpload()">
-                        <i class="ph ph-x"></i> Cancel
-                    </button>
-                </div>
-            `;
-        } else if (status === 'Pending Submission') {
-            buttons = `
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.uploadDoc('${status}')">
-                        <i class="ph ph-paperclip"></i> Upload Doc
-                    </button>
-                    <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;" onclick="app.submitToBank()">
-                        <i class="ph ph-paper-plane"></i> Submit
-                    </button>
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;" onclick="app.cancelUpload()">
-                        <i class="ph ph-x"></i> Cancel
-                    </button>
-                </div>
-            `;
+        let uploadDisabled = '';
+        let submitDisabled = '';
+        let cancelDisabled = '';
+        let submitClass = 'btn btn-outline';
+        let uploadStyle = 'padding: 6px 12px; font-size: 0.85rem;';
+        let submitStyle = 'padding: 6px 12px; font-size: 0.85rem;';
+        let cancelStyle = 'padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;';
+        
+        // Determine which buttons should be disabled based on status
+        if (status === 'Pending Documents Upload') {
+            // Upload Doc and Cancel are enabled, Submit is disabled
+            submitDisabled = 'disabled';
+            submitStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
+        } else if (status === 'Pending Submission to Bank') {
+            // All buttons are enabled, Submit becomes primary
+            submitClass = 'btn btn-primary';
         } else if (status === 'Submitted to Bank' || status === 'Cancelled') {
-            buttons = `<span style="color: var(--text-muted); font-size: 0.85rem;">No actions available</span>`;
+            // All buttons are disabled
+            uploadDisabled = 'disabled';
+            submitDisabled = 'disabled';
+            cancelDisabled = 'disabled';
+            uploadStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
+            submitStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
+            cancelStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
         }
 
-        return buttons;
+        return `
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline" style="${uploadStyle}" onclick="app.uploadDoc('${status}')" ${uploadDisabled}>
+                    <i class="ph ph-paperclip"></i> Upload Doc
+                </button>
+                <button class="${submitClass}" style="${submitStyle}" onclick="app.submitToBank()" ${submitDisabled}>
+                    <i class="ph ph-paper-plane"></i> Submit
+                </button>
+                <button class="btn btn-outline" style="${cancelStyle}" onclick="app.cancelUpload()" ${cancelDisabled}>
+                    <i class="ph ph-x"></i> Cancel
+                </button>
+            </div>
+        `;
     },
 
     // Helper: Filter Tracking by Upload Reference Number
@@ -1904,6 +1962,37 @@ function initializeApp() {
             e.target.value = e.target.value.replace(/[^0-9]/g, '');
         });
     }
+    
+    // Notification dropdown event listeners
+    const notificationsBtn = document.getElementById('notifications-btn');
+    if (notificationsBtn) {
+        notificationsBtn.addEventListener('click', (e) => {
+            app.toggleNotificationsDropdown(e);
+        });
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('notifications-dropdown');
+        const btn = document.getElementById('notifications-btn');
+        
+        if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+            app.closeNotificationsDropdown();
+        }
+    });
+    
+    // Mark all as read button
+    document.addEventListener('click', (e) => {
+        if (e.target.textContent === 'Mark All as Read') {
+            e.preventDefault();
+            app.markAllNotificationsRead();
+        }
+        
+        if (e.target.textContent === 'View All') {
+            e.preventDefault();
+            alert('View All Notifications functionality would open a dedicated notifications page');
+        }
+    });
     
     // Bind navigation links in sidebar
     document.querySelectorAll('[data-navigate]').forEach(link => {
