@@ -19,14 +19,14 @@ var app = {
                 uploadRefNumber: 'UPL20260128-002',
                 fileName: 'auto_loans_jan.xlsx',
                 noOfApplications: 8,
-                status: 'Pending Bank Submission',
+                status: 'Pending Submission to Bank',
                 uploadedDateTime: 'Jan 28, 2026, 09:15 AM'
             },
             {
                 uploadRefNumber: 'UPL20260125-001',
                 fileName: 'personal_loans_batch1.csv',
                 noOfApplications: 12,
-                status: 'Documents Uploaded',
+                status: 'Pending Documents Upload',
                 uploadedDateTime: 'Jan 25, 2026, 02:20 PM'
             },
             {
@@ -1553,11 +1553,11 @@ var app = {
         let bgColor = '#d1fae5';
         let textColor = '#065f46';
 
-        if (status === 'Documents Uploaded') {
+        if (status === 'Pending Documents Upload') {
             badgeClass = 'badge-warning';
             bgColor = '#fef3c7';
             textColor = '#92400e';
-        } else if (status === 'Pending Bank Submission') {
+        } else if (status === 'Pending Submission to Bank') {
             badgeClass = 'badge-blue';
             bgColor = '#dbeafe';
             textColor = '#1e40af';
@@ -1585,11 +1585,11 @@ var app = {
         let cancelStyle = 'padding: 6px 12px; font-size: 0.85rem; color: #ef4444; border-color: #ef4444;';
         
         // Determine which buttons should be disabled based on status
-        if (status === 'Documents Uploaded') {
+        if (status === 'Pending Documents Upload') {
             // Upload Doc and Cancel are enabled, Submit is disabled
             submitDisabled = 'disabled';
             submitStyle = 'padding: 6px 12px; font-size: 0.85rem; opacity: 0.4; cursor: not-allowed; background: #f8fafc; color: #94a3b8; border-color: #e2e8f0;';
-        } else if (status === 'Pending Bank Submission') {
+        } else if (status === 'Pending Submission to Bank') {
             // All buttons are enabled, Submit becomes primary
             submitClass = 'btn btn-primary';
         } else if (status === 'Submitted to Bank' || status === 'Cancelled') {
