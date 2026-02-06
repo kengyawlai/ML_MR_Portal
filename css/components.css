@@ -289,7 +289,7 @@ table {
 }
 
 th {
-    text-align: left;
+    text-align: center;
     padding: 12px 16px;
     border-bottom: 1px solid #e2e8f0;
     color: var(--text-muted);
@@ -304,6 +304,7 @@ td {
     border-bottom: 1px solid #f1f5f9;
     color: var(--text-main);
     vertical-align: middle;
+    text-align: center;
 }
 
 /* Center align status column */
@@ -502,35 +503,39 @@ tr:last-child td {
     /* Bring active to front */
     transform: scale(1.02);
     /* Slight pop */
+    background: rgba(52, 121, 242, 1);
+    /* Successful/Active color */
 }
 
 .chevron-step.completed {
-    background-color: #10b981;
-    /* Emerald */
+    background-color: rgba(41, 191, 142, 1);
+    /* Completed color - green */
     color: white;
     cursor: pointer;
     z-index: 5;
 }
 
+/* Inactive/Unsuccessful steps */
+.chevron-step:not(.active):not(.completed) {
+    background-color: rgba(40, 105, 236, 0.3);
+    /* Unsuccessful/Not proceeded color */
+}
+
 /* Specific Colors per Step (Matches example vibe) */
 .chevron-step[data-step="1"].active {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    /* Red */
+    background: rgba(52, 121, 242, 1);
 }
 
 .chevron-step[data-step="2"].active {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    /* Blue */
+    background: rgba(52, 121, 242, 1);
 }
 
 .chevron-step[data-step="3"].active {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    /* Amber */
+    background: rgba(52, 121, 242, 1);
 }
 
 .chevron-step[data-step="4"].active {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-    /* Violet */
+    background: rgba(52, 121, 242, 1);
 }
 
 /* -------------------------------------------------------------------------- */

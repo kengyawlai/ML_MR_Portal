@@ -762,6 +762,37 @@ var app = {
         if (mfaScreen) mfaScreen.style.display = 'none';
     },
 
+    // Utility function to format numbers with thousand separators
+    formatNumber: function(value, removePrefix = false) {
+        if (value === null || value === undefined || value === '') return value;
+        
+        // If it's a string with RM prefix, extract the number
+        let numStr = String(value);
+        let prefix = '';
+        
+        if (numStr.includes('RM')) {
+            prefix = 'RM ';
+            numStr = numStr.replace(/RM\s*/g, '');
+        }
+        
+        // Remove existing commas
+        numStr = numStr.replace(/,/g, '');
+        
+        // Parse the number
+        const num = parseFloat(numStr);
+        
+        if (isNaN(num)) return value;
+        
+        // Format with thousand separators
+        const formatted = num.toLocaleString('en-US', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2
+        });
+        
+        // Return with or without prefix based on parameter
+        return removePrefix ? formatted : prefix + formatted;
+    },
+
     // Shared metrics calculation function
     calculateMetrics: function() {
         const apps = this.state.applications;
@@ -1265,7 +1296,7 @@ var app = {
                                     <th>Application ID</th>
                                     <th>Customer Name</th>
                                     <th>Product</th>
-                                    <th>Amount</th>
+                                    <th>Loan Amount (RM)</th>
                                     <th>Status</th>
                                     <th>Submission Date/Time</th>
                                     <th>Details</th>
@@ -1277,7 +1308,7 @@ var app = {
                                     <td style="font-weight: 500;">#APP-2023-889</td>
                                     <td>Alice Wong</td>
                                     <td>Personal-i</td>
-                                    <td>$5,000</td>
+                                    <td style="text-align: right;">${app.formatNumber('RM 5,000', true)}</td>
                                     <td><span class="badge badge-success">Approved</span></td>
                                     <td>Oct 28, 2023 10:30 AM</td>
                                     <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-889')"><i class="ph ph-caret-right"></i></button></td>
@@ -1287,7 +1318,7 @@ var app = {
                                     <td style="font-weight: 500;">#APP-2023-892</td>
                                     <td>Kumar R.</td>
                                     <td>Home Reno</td>
-                                    <td>$25,000</td>
+                                    <td style="text-align: right;">${app.formatNumber('RM 25,000', true)}</td>
                                     <td><span class="badge badge-warning">Additional Info Required</span></td>
                                     <td>Oct 28, 2023 09:15 AM</td>
                                     <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-892')"><i class="ph ph-caret-right"></i></button></td>
@@ -1297,7 +1328,7 @@ var app = {
                                     <td style="font-weight: 500;">#APP-2023-901</td>
                                     <td>Tan Ah Beng</td>
                                     <td>Biz Micro</td>
-                                    <td>$50,000</td>
+                                    <td style="text-align: right;">${app.formatNumber('RM 50,000', true)}</td>
                                     <td><span class="badge badge-blue">Under Review</span></td>
                                     <td>Oct 27, 2023 04:45 PM</td>
                                     <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-901')"><i class="ph ph-caret-right"></i></button></td>
@@ -1307,7 +1338,7 @@ var app = {
                                     <td style="font-weight: 500;">#APP-2023-905</td>
                                     <td>Siti Aminah</td>
                                     <td>Car Loan</td>
-                                    <td>$80,000</td>
+                                    <td style="text-align: right;">${app.formatNumber('RM 80,000', true)}</td>
                                     <td><span class="badge badge-error" style="background: #fee2e2; color: #ef4444;">Rejected</span></td>
                                     <td>Oct 27, 2023 02:20 PM</td>
                                     <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-905')"><i class="ph ph-caret-right"></i></button></td>
@@ -1317,7 +1348,7 @@ var app = {
                                     <td style="font-weight: 500;">#APP-2023-910</td>
                                     <td>John Doe</td>
                                     <td>Personal</td>
-                                    <td>$12,000</td>
+                                    <td style="text-align: right;">${app.formatNumber('RM 12,000', true)}</td>
                                     <td><span class="badge badge-blue" style="background: #e0f2fe; color: #0284c7;">Submitted</span></td>
                                     <td>Oct 26, 2023 11:30 AM</td>
                                     <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-910')"><i class="ph ph-caret-right"></i></button></td>
@@ -1327,7 +1358,7 @@ var app = {
                                     <td style="font-weight: 500;">#APP-2023-912</td>
                                     <td>Michelle Tan</td>
                                     <td>Housing Loan</td>
-                                    <td>$350,000</td>
+                                    <td style="text-align: right;">${app.formatNumber('RM 350,000', true)}</td>
                                     <td><span class="badge" style="background: #f1f5f9; color: #64748b;">Draft</span></td>
                                     <td>-</td>
                                     <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-912')"><i class="ph ph-caret-right"></i></button></td>
@@ -1337,7 +1368,7 @@ var app = {
                                     <td style="font-weight: 500;">#APP-2023-855</td>
                                     <td>Rajesh K.</td>
                                     <td>Personal-i</td>
-                                    <td>$10,000</td>
+                                    <td style="text-align: right;">${app.formatNumber('RM 10,000', true)}</td>
                                     <td><span class="badge" style="background: #fee2e2; color: #991b1b;">Cancelled</span></td>
                                     <td>Oct 20, 2023 09:00 AM</td>
                                     <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
@@ -1531,7 +1562,7 @@ var app = {
                             </div>
                             <div>
                                 <label style="color: #64748b; font-size: 0.85rem; font-weight: 600;">Loan Amount Requested</label>
-                                <p style="margin: 8px 0 0 0; font-size: 1rem;">${loan.amountRequested}</p>
+                                <p style="margin: 8px 0 0 0; font-size: 1rem;">${app.formatNumber(loan.amountRequested)}</p>
                             </div>
                             <div>
                                 <label style="color: #64748b; font-size: 0.85rem; font-weight: 600;">Tenure</label>
@@ -1638,11 +1669,11 @@ var app = {
                         </div>
                         <div>
                             <label style="color: #64748b; font-size: 0.85rem; font-weight: 600;">Loan Amount Requested</label>
-                            <p style="margin: 8px 0 0 0; font-size: 1rem;">${loan.amountRequested}</p>
+                            <p style="margin: 8px 0 0 0; font-size: 1rem;">${app.formatNumber(loan.amountRequested)}</p>
                         </div>
                         <div>
                             <label style="color: #64748b; font-size: 0.85rem; font-weight: 600;">Loan Amount Approved</label>
-                            <p style="margin: 8px 0 0 0; font-size: 1rem;">${loan.amountApproved || 'N/A'}</p>
+                            <p style="margin: 8px 0 0 0; font-size: 1rem;">${loan.amountApproved ? app.formatNumber(loan.amountApproved) : 'N/A'}</p>
                         </div>
                         <div>
                             <label style="color: #64748b; font-size: 0.85rem; font-weight: 600;">Tenure</label>
@@ -1745,7 +1776,7 @@ var app = {
                                     <th>Application ID</th>
                                     <th>Customer Name</th>
                                     <th>Product</th>
-                                    <th>Amount</th>
+                                    <th>Loan Amount (RM)</th>
                                     <th>Status</th>
                                     <th>Submission Date/Time</th>
                                     <th>Bank Remark</th>
@@ -1753,17 +1784,17 @@ var app = {
                                 </tr>
                             </thead>
                             <tbody>
-                                ${queryApplications.map(app => `
+                                ${queryApplications.map(application => `
                                     <tr>
-                                        <td style="font-weight: 500;">${app.uploadRefNumber}</td>
-                                        <td style="font-weight: 500;">${app.id}</td>
-                                        <td>${app.customer.fullName}</td>
-                                        <td>${app.loan.product}</td>
-                                        <td>RM ${app.loan.amountRequested.replace('RM ', '')}</td>
+                                        <td style="font-weight: 500;">${application.uploadRefNumber}</td>
+                                        <td style="font-weight: 500;">${application.id}</td>
+                                        <td>${application.customer.fullName}</td>
+                                        <td>${application.loan.product}</td>
+                                        <td style="text-align: right;">${app.formatNumber(application.loan.amountRequested, true)}</td>
                                         <td><span class="badge badge-warning">Additional Info Required</span></td>
-                                        <td>${app.loan.submissionDate}</td>
-                                        <td style="color: #64748b; font-size: 0.9rem;">${app.bankRemark || '-'}</td>
-                                        <td><button class="icon-btn" onclick="app.navigate('queryDetails', '${app.id}')"><i class="ph ph-caret-right"></i></button></td>
+                                        <td>${application.loan.submissionDate}</td>
+                                        <td style="color: #64748b; font-size: 0.9rem;">${application.bankRemark || '-'}</td>
+                                        <td><button class="icon-btn" onclick="app.navigate('queryDetails', '${application.id}')"><i class="ph ph-caret-right"></i></button></td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -1854,9 +1885,9 @@ var app = {
             const metrics = app.calculateMetrics();
             
             // Create commission table rows using shared metrics
-            const commissionTableRows = metrics.approvedApps.length > 0 ? metrics.approvedApps.map(app => {
-                const product = app.loan.product;
-                const amountStr = app.loan.amountApproved || app.loan.amountRequested;
+            const commissionTableRows = metrics.approvedApps.length > 0 ? metrics.approvedApps.map(application => {
+                const product = application.loan.product;
+                const amountStr = application.loan.amountApproved || application.loan.amountRequested;
                 const amount = parseFloat(amountStr.replace(/[RM,\s]/g, ''));
                 const commissionRates = {
                     'Personal-i': 1.5,
@@ -1869,8 +1900,8 @@ var app = {
                 const rate = commissionRates[product] || 1.5;
                 const commission = (amount * rate) / 100;
                 
-                return `<tr><td style="font-weight: 500;">${app.uploadRefNumber}</td><td style="font-weight: 500;">${app.id}</td><td>${app.customer.fullName}</td><td>${app.loan.product}</td><td>RM ${commission.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td style="text-align: center;"><span class="badge badge-success">Paid</span></td></tr>`;
-            }).join('') : '<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 24px;">No commission data available</td></tr>';
+                return `<tr><td style="font-weight: 500;">${application.uploadRefNumber}</td><td style="font-weight: 500;">${application.id}</td><td>${application.customer.fullName}</td><td>${application.loan.product}</td><td>${app.formatNumber(amountStr)}</td><td>${rate}%</td><td>RM ${commission.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td><td>${application.loan.submissionDate}</td></tr>`;
+            }).join('') : '<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 24px;">No commission data available</td></tr>';
             
             // Create conversion funnel HTML using metrics
             const conversionFunnelHtml = [
@@ -1904,7 +1935,7 @@ var app = {
             // Create commission by product HTML using metrics
             const commissionByProductHtml = Object.entries(metrics.commissionByProduct)
                 .sort(([,a], [,b]) => b.commission - a.commission)
-                .map(([product, data]) => `<div style="padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;"><div style="color: #64748b; font-size: 0.85rem; margin-bottom: 8px;">${product}</div><div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">RM ${data.commission.toFixed(2)}</div></div>`)
+                .map(([product, data]) => `<div style="padding: 16px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;"><div style="color: #64748b; font-size: 0.85rem; margin-bottom: 8px;">${product}</div><div style="font-size: 1.5rem; font-weight: 700; color: #10b981;">RM ${data.commission.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div></div>`)
                 .join('');
             
             return `
@@ -1938,12 +1969,12 @@ var app = {
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin: 24px 0;">
                     <div class="card" style="border-left: 4px solid #10b981;">
                         <div style="color: #64748b; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;">Estimated Commission (MTD)</div>
-                        <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 8px;">RM ${metrics.totalMTDCommission.toFixed(2)}</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #10b981; margin-bottom: 8px;">RM ${metrics.totalMTDCommission.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                         <div style="font-size: 0.85rem; color: #64748b;">From ${metrics.approvedApps.length} approved application(s)</div>
                     </div>
                     <div class="card" style="border-left: 4px solid #0284c7;">
                         <div style="color: #64748b; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;">Estimated Commission (YTD)</div>
-                        <div style="font-size: 2rem; font-weight: 700; color: #0284c7; margin-bottom: 8px;">RM ${metrics.totalYTDCommission.toFixed(2)}</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0284c7; margin-bottom: 8px;">RM ${metrics.totalYTDCommission.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                         <div style="font-size: 0.85rem; color: #64748b;">Year-to-date projection</div>
                     </div>
                     <div class="card" style="border-left: 4px solid #7c3aed;">
@@ -2000,7 +2031,7 @@ var app = {
                     </div>
                     <div style="padding: 16px 24px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; background: #f8fafc;">
                         <div style="color: #64748b; font-size: 0.9rem;">
-                            <strong>Total Commission (Approved)</strong>: RM ${metrics.totalMTDCommission.toFixed(2)}
+                            <strong>Total Commission (Approved)</strong>: RM ${metrics.totalMTDCommission.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                         </div>
                         <button class="btn btn-outline" onclick="alert('Export functionality coming soon: PDF or Excel report of your commission details.')">
                             <i class="ph ph-download-simple"></i> Export Report
@@ -2255,7 +2286,7 @@ var app = {
             formContent = `
                 <div class="form-group full-width">
                     <h3>Review Upload Content</h3>
-                    <p style="margin-bottom: 16px; color: var(--text-muted);">We found <strong>3</strong> valid applications in <em>batch_upload_v2.csv</em>.</p>
+                    <p style="margin-bottom: 16px; color: var(--text-muted);">We found <strong>5</strong> applications in <em>batch_upload_v2.csv</em>. <strong>3 valid</strong>, <strong>1 with warnings</strong>, <strong>1 invalid</strong>.</p>
                     
                     <div class="table-container" style="border: 1px solid #e2e8f0; border-radius: 8px;">
                         <table>
@@ -2264,7 +2295,7 @@ var app = {
                                     <th>Ref ID</th>
                                     <th>Customer Name</th>
                                     <th>Product</th>
-                                    <th>Amount</th>
+                                    <th>Loan Amount (RM)</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -2273,22 +2304,36 @@ var app = {
                                     <td>REF-001</td>
                                     <td>Alice Wong</td>
                                     <td>Personal-i</td>
-                                    <td>$5,000</td>
-                                    <td><span class="badge badge-success">Valid</span></td>
+                                    <td style="text-align: right;">5,000</td>
+                                    <td><span class="badge badge-success">Successful</span></td>
                                 </tr>
                                 <tr>
                                     <td>REF-002</td>
                                     <td>Kumar R.</td>
                                     <td>Home Reno</td>
-                                    <td>$25,000</td>
-                                    <td><span class="badge badge-success">Valid</span></td>
+                                    <td style="text-align: right;">25,000</td>
+                                    <td><span class="badge badge-success">Successful</span></td>
                                 </tr>
                                 <tr>
                                     <td>REF-003</td>
                                     <td>Siti Aminah</td>
                                     <td>Car Loan</td>
-                                    <td>$80,000</td>
-                                    <td><span class="badge badge-success">Valid</span></td>
+                                    <td style="text-align: right;">80,000</td>
+                                    <td><span class="badge badge-success">Successful</span></td>
+                                </tr>
+                                <tr>
+                                    <td>REF-004</td>
+                                    <td>John Tan</td>
+                                    <td>Personal</td>
+                                    <td style="text-align: right;">15,000</td>
+                                    <td><span class="badge badge-warning">Loading</span></td>
+                                </tr>
+                                <tr>
+                                    <td>REF-005</td>
+                                    <td>Mary Lee</td>
+                                    <td>Biz Micro</td>
+                                    <td style="text-align: right;">-</td>
+                                    <td><span class="badge badge-error">Unsuccessful</span></td>
                                 </tr>
                             </tbody>
                         </table>
