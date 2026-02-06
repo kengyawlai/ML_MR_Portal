@@ -1338,16 +1338,16 @@ var app = {
         
         if (period === 'year') {
             chartData = [
-                { label: 'Jan', approved: 12, processing: 8, rejected: 4 },
-                { label: 'Feb', approved: 15, processing: 10, rejected: 3 },
-                { label: 'Mar', approved: 10, processing: 12, rejected: 5 },
-                { label: 'Apr', approved: 18, processing: 7, rejected: 2 },
-                { label: 'May', approved: 14, processing: 9, rejected: 6 },
-                { label: 'Jun', approved: 20, processing: 11, rejected: 4 },
-                { label: 'Jul', approved: 16, processing: 13, rejected: 3 },
-                { label: 'Aug', approved: 11, processing: 15, rejected: 5 },
-                { label: 'Sep', approved: 19, processing: 8, rejected: 4 },
-                { label: 'Oct', approved: 13, processing: 14, rejected: 6 },
+                { label: 'Jan', approved: 18, processing: 0, rejected: 6 },
+                { label: 'Feb', approved: 22, processing: 0, rejected: 6 },
+                { label: 'Mar', approved: 20, processing: 0, rejected: 7 },
+                { label: 'Apr', approved: 23, processing: 0, rejected: 4 },
+                { label: 'May', approved: 19, processing: 0, rejected: 10 },
+                { label: 'Jun', approved: 28, processing: 0, rejected: 7 },
+                { label: 'Jul', approved: 25, processing: 0, rejected: 7 },
+                { label: 'Aug', approved: 22, processing: 0, rejected: 9 },
+                { label: 'Sep', approved: 26, processing: 0, rejected: 5 },
+                { label: 'Oct', approved: 27, processing: 0, rejected: 6 },
                 { label: 'Nov', approved: 17, processing: 10, rejected: 5 },
                 { label: 'Dec', approved: 11, processing: 19, rejected: 3 }
             ];
@@ -1362,18 +1362,18 @@ var app = {
             ];
         } else if (period === 'lastYear') {
             chartData = [
-                { label: 'Jan', approved: 8, processing: 12, rejected: 3 },
-                { label: 'Feb', approved: 10, processing: 9, rejected: 4 },
-                { label: 'Mar', approved: 12, processing: 11, rejected: 2 },
-                { label: 'Apr', approved: 9, processing: 13, rejected: 5 },
-                { label: 'May', approved: 11, processing: 8, rejected: 3 },
-                { label: 'Jun', approved: 15, processing: 10, rejected: 4 },
-                { label: 'Jul', approved: 13, processing: 12, rejected: 2 },
-                { label: 'Aug', approved: 14, processing: 9, rejected: 6 },
-                { label: 'Sep', approved: 10, processing: 14, rejected: 3 },
-                { label: 'Oct', approved: 16, processing: 11, rejected: 5 },
-                { label: 'Nov', approved: 12, processing: 13, rejected: 4 },
-                { label: 'Dec', approved: 18, processing: 10, rejected: 3 }
+                { label: 'Jan', approved: 17, processing: 0, rejected: 6 },
+                { label: 'Feb', approved: 19, processing: 0, rejected: 4 },
+                { label: 'Mar', approved: 21, processing: 0, rejected: 4 },
+                { label: 'Apr', approved: 20, processing: 0, rejected: 7 },
+                { label: 'May', approved: 17, processing: 0, rejected: 5 },
+                { label: 'Jun', approved: 24, processing: 0, rejected: 5 },
+                { label: 'Jul', approved: 22, processing: 0, rejected: 5 },
+                { label: 'Aug', approved: 18, processing: 0, rejected: 9 },
+                { label: 'Sep', approved: 21, processing: 0, rejected: 6 },
+                { label: 'Oct', approved: 23, processing: 0, rejected: 8 },
+                { label: 'Nov', approved: 20, processing: 0, rejected: 9 },
+                { label: 'Dec', approved: 25, processing: 0, rejected: 6 }
             ];
         }
         
