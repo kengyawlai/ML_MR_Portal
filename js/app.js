@@ -1398,15 +1398,15 @@ var app = {
             
             return `
             <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                <div style="width: 100%; display: flex; flex-direction: column-reverse; min-height: 20px;">
+                ${total > 0 ? `<span style="font-size: 0.75rem; color: var(--text-main); margin-bottom: 4px; font-weight: 700;">${total}</span>` : ''}
+                <div style="width: 100%; display: flex; flex-direction: column-reverse; min-height: 20px; position: relative;">
                     ${total > 0 ? `
-                        <div style="width: 100%; height: ${approvedHeight}px; background: ${approvedColor}; border-radius: ${data.processing === 0 && data.rejected === 0 ? '4px 4px 0 0' : '0'}; transition: all 0.3s;" title="Approved: ${data.approved}"></div>
-                        ${data.processing > 0 ? `<div style="width: 100%; height: ${processingHeight}px; background: ${processingColor}; transition: all 0.3s;" title="Processing: ${data.processing}"></div>` : ''}
-                        ${data.rejected > 0 ? `<div style="width: 100%; height: ${rejectedHeight}px; background: ${rejectedColor}; border-radius: 4px 4px 0 0; transition: all 0.3s;" title="Rejected: ${data.rejected}"></div>` : ''}
+                        <div style="width: 100%; height: ${approvedHeight}px; background: ${approvedColor}; border-radius: ${data.processing === 0 && data.rejected === 0 ? '4px 4px 0 0' : '0'}; transition: all 0.3s; display: flex; align-items: center; justify-content: center; color: ${isCurrent ? '#ffffff' : '#065f46'}; font-size: 0.7rem; font-weight: 600;" title="Approved: ${data.approved}">${data.approved > 0 && approvedHeight > 18 ? data.approved : ''}</div>
+                        ${data.processing > 0 ? `<div style="width: 100%; height: ${processingHeight}px; background: ${processingColor}; transition: all 0.3s; display: flex; align-items: center; justify-content: center; color: ${isCurrent ? '#ffffff' : '#92400e'}; font-size: 0.7rem; font-weight: 600;" title="Processing: ${data.processing}">${processingHeight > 18 ? data.processing : ''}</div>` : ''}
+                        ${data.rejected > 0 ? `<div style="width: 100%; height: ${rejectedHeight}px; background: ${rejectedColor}; border-radius: 4px 4px 0 0; transition: all 0.3s; display: flex; align-items: center; justify-content: center; color: ${isCurrent ? '#ffffff' : '#991b1b'}; font-size: 0.7rem; font-weight: 600;" title="Rejected: ${data.rejected}">${rejectedHeight > 18 ? data.rejected : ''}</div>` : ''}
                     ` : '<div style="width: 100%; height: 20px; background: #f1f5f9; border-radius: 4px 4px 0 0;"></div>'}
                 </div>
                 <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; font-weight: ${isCurrent ? '700' : '400'};">${data.label}</span>
-                ${total > 0 ? `<span style="font-size: 0.65rem; color: var(--text-main); margin-top: 2px; font-weight: 600;">${total}</span>` : ''}
             </div>
             `;
         }).join('');
