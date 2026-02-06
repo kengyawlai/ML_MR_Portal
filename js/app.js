@@ -5,34 +5,41 @@ var app = {
         formData: {},
         selectedApplicationId: null,
         filterByUploadRef: null,
+        trackingFilters: {
+            uploadRef: '',
+            appId: '',
+            customerName: '',
+            status: '',
+            submissionDate: ''
+        },
         mfaCountdown: 60,
         mfaTimer: null,
         bulkUploads: [
             {
                 uploadRefNumber: 'UPL20260130-001',
                 fileName: 'batch_upload_v2.csv',
-                noOfApplications: 10,
+                noOfApplications: 11,
                 status: 'Submitted to Bank',
                 uploadedDateTime: 'Jan 30, 2026, 10:30 AM'
             },
             {
                 uploadRefNumber: 'UPL20260128-002',
                 fileName: 'auto_loans_jan.xlsx',
-                noOfApplications: 8,
+                noOfApplications: 9,
                 status: 'Pending Submission to Bank',
                 uploadedDateTime: 'Jan 28, 2026, 09:15 AM'
             },
             {
                 uploadRefNumber: 'UPL20260125-001',
                 fileName: 'personal_loans_batch1.csv',
-                noOfApplications: 9,
+                noOfApplications: 11,
                 status: 'Pending Documents Upload',
                 uploadedDateTime: 'Jan 25, 2026, 02:20 PM'
             },
             {
                 uploadRefNumber: 'UPL20260120-003',
                 fileName: 'legacy_data_import.csv',
-                noOfApplications: 3,
+                noOfApplications: 5,
                 status: 'Cancelled',
                 uploadedDateTime: 'Jan 20, 2026, 04:45 PM'
             }
@@ -699,6 +706,207 @@ var app = {
                     status: 'Cancelled',
                     submissionDate: 'Oct 20, 2023 11:45 AM'
                 }
+            },
+            // Additional applications to reach 35 submitted
+            {
+                id: '#APP-2023-918',
+                uploadRefNumber: 'UPL20260130-001',
+                customer: {
+                    fullName: 'Lina Abdullah',
+                    nric: '678901-23-4569',
+                    phone: '+60-18-234-5680',
+                    email: 'lina.abdullah@email.com',
+                    residentialAddress: '909 Putrajaya, 62000, Malaysia',
+                    mailingAddress: '909 Putrajaya, 62000, Malaysia',
+                    employer: 'Public Service',
+                    salary: 'RM 7,500',
+                    occupation: 'Senior Officer'
+                },
+                loan: {
+                    product: 'Personal-i',
+                    amountRequested: 'RM 20,000',
+                    tenure: '48 months',
+                    interestRate: '5.4% (Fixed)',
+                    amountApproved: 'RM 20,000',
+                    purpose: 'Home Improvement',
+                    status: 'Approved',
+                    submissionDate: 'Oct 29, 2023 09:30 AM'
+                }
+            },
+            {
+                id: '#APP-2023-919',
+                uploadRefNumber: 'UPL20260130-001',
+                customer: {
+                    fullName: 'Marcus Lim',
+                    nric: '789012-34-5670',
+                    phone: '+60-19-345-6781',
+                    email: 'marcus.lim@email.com',
+                    residentialAddress: '1010 Cyberjaya, 63000, Malaysia',
+                    mailingAddress: '1010 Cyberjaya, 63000, Malaysia',
+                    employer: 'Tech Startup',
+                    salary: 'RM 10,000',
+                    occupation: 'Software Developer'
+                },
+                loan: {
+                    product: 'Car Loan',
+                    amountRequested: 'RM 100,000',
+                    tenure: '84 months',
+                    interestRate: '3.6% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Vehicle Purchase',
+                    status: 'Under Review',
+                    submissionDate: 'Oct 29, 2023 11:00 AM'
+                }
+            },
+            {
+                id: '#APP-2023-920',
+                uploadRefNumber: 'UPL20260128-002',
+                customer: {
+                    fullName: 'Nadia Ismail',
+                    nric: '890123-45-6781',
+                    phone: '+60-11-456-7892',
+                    email: 'nadia.ismail@email.com',
+                    residentialAddress: '1111 Melaka, 75000, Malaysia',
+                    mailingAddress: '1111 Melaka, 75000, Malaysia',
+                    employer: 'Tourism Industry',
+                    salary: 'RM 5,800',
+                    occupation: 'Tour Manager'
+                },
+                loan: {
+                    product: 'Personal',
+                    amountRequested: 'RM 16,000',
+                    tenure: '36 months',
+                    interestRate: '5.5% (Fixed)',
+                    amountApproved: 'RM 16,000',
+                    purpose: 'Business Capital',
+                    status: 'Approved',
+                    submissionDate: 'Oct 28, 2023 10:00 AM'
+                }
+            },
+            {
+                id: '#APP-2023-921',
+                uploadRefNumber: 'UPL20260128-002',
+                customer: {
+                    fullName: 'Omar Hassan',
+                    nric: '901234-56-7892',
+                    phone: '+60-12-567-8903',
+                    email: 'omar.hassan@email.com',
+                    residentialAddress: '1212 Johor Bahru, 80000, Malaysia',
+                    mailingAddress: '1212 Johor Bahru, 80000, Malaysia',
+                    employer: 'Logistics',
+                    salary: 'RM 6,200',
+                    occupation: 'Operations Manager'
+                },
+                loan: {
+                    product: 'Biz Micro',
+                    amountRequested: 'RM 45,000',
+                    tenure: '60 months',
+                    interestRate: '6.3% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Business Expansion',
+                    status: 'Submitted',
+                    submissionDate: 'Oct 28, 2023 02:45 PM'
+                }
+            },
+            {
+                id: '#APP-2023-922',
+                uploadRefNumber: 'UPL20260125-001',
+                customer: {
+                    fullName: 'Patricia Ng',
+                    nric: '012345-67-8903',
+                    phone: '+60-13-678-9014',
+                    email: 'patricia.ng@email.com',
+                    residentialAddress: '1313 Ipoh, 30000, Malaysia',
+                    mailingAddress: '1313 Ipoh, 30000, Malaysia',
+                    employer: 'Healthcare',
+                    salary: 'RM 8,500',
+                    occupation: 'Doctor'
+                },
+                loan: {
+                    product: 'Housing Loan',
+                    amountRequested: 'RM 500,000',
+                    tenure: '360 months',
+                    interestRate: '3.2% (Fixed)',
+                    amountApproved: 'RM 500,000',
+                    purpose: 'Property Purchase',
+                    status: 'Approved',
+                    submissionDate: 'Oct 27, 2023 09:00 AM'
+                }
+            },
+            {
+                id: '#APP-2023-923',
+                uploadRefNumber: 'UPL20260125-001',
+                customer: {
+                    fullName: 'Qadir Rahman',
+                    nric: '123456-78-9015',
+                    phone: '+60-14-789-0125',
+                    email: 'qadir.rahman@email.com',
+                    residentialAddress: '1414 Kuantan, 25000, Malaysia',
+                    mailingAddress: '1414 Kuantan, 25000, Malaysia',
+                    employer: 'Oil & Gas',
+                    salary: 'RM 11,000',
+                    occupation: 'Engineer'
+                },
+                loan: {
+                    product: 'Car Loan',
+                    amountRequested: 'RM 110,000',
+                    tenure: '72 months',
+                    interestRate: '3.5% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Vehicle Purchase',
+                    status: 'Under Review',
+                    submissionDate: 'Oct 27, 2023 03:30 PM'
+                }
+            },
+            {
+                id: '#APP-2023-924',
+                uploadRefNumber: 'UPL20260120-003',
+                customer: {
+                    fullName: 'Rachel Wong',
+                    nric: '234567-89-0126',
+                    phone: '+60-15-890-1236',
+                    email: 'rachel.wong@email.com',
+                    residentialAddress: '1515 Penang, 10000, Malaysia',
+                    mailingAddress: '1515 Penang, 10000, Malaysia',
+                    employer: 'F&B Industry',
+                    salary: 'RM 4,200',
+                    occupation: 'Restaurant Manager'
+                },
+                loan: {
+                    product: 'Personal',
+                    amountRequested: 'RM 9,000',
+                    tenure: '24 months',
+                    interestRate: '5.9% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Personal Expense',
+                    status: 'Cancelled',
+                    submissionDate: 'Oct 21, 2023 10:30 AM'
+                }
+            },
+            {
+                id: '#APP-2023-925',
+                uploadRefNumber: 'UPL20260120-003',
+                customer: {
+                    fullName: 'Samuel Tan',
+                    nric: '345678-90-1237',
+                    phone: '+60-16-901-2347',
+                    email: 'samuel.tan@email.com',
+                    residentialAddress: '1616 Kota Kinabalu, 88000, Malaysia',
+                    mailingAddress: '1616 Kota Kinabalu, 88000, Malaysia',
+                    employer: 'Tourism',
+                    salary: 'RM 5,500',
+                    occupation: 'Hotel Manager'
+                },
+                loan: {
+                    product: 'Personal-i',
+                    amountRequested: 'RM 14,000',
+                    tenure: '36 months',
+                    interestRate: '5.6% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Education',
+                    status: 'Cancelled',
+                    submissionDate: 'Oct 21, 2023 02:15 PM'
+                }
             }
         ],
         messages: [
@@ -715,7 +923,7 @@ var app = {
                 id: 2,
                 from: 'System Notification',
                 subject: 'Batch Upload UPL20260130-001 Complete',
-                content: 'Your bulk upload has been successfully processed. 10 applications have been submitted for review.',
+                content: 'Your bulk upload has been successfully processed. 11 applications have been submitted for review.',
                 timestamp: 'Jan 30, 2026, 10:45 AM',
                 read: false,
                 type: 'notification'
@@ -784,8 +992,9 @@ var app = {
         if (isNaN(num)) return value;
         
         // Format with thousand separators
+        // If removePrefix is true (for tables), always show 2 decimal places
         const formatted = num.toLocaleString('en-US', {
-            minimumFractionDigits: 0,
+            minimumFractionDigits: removePrefix ? 2 : 0,
             maximumFractionDigits: 2
         });
         
@@ -1123,6 +1332,93 @@ var app = {
         }
     },
 
+    // Chart rendering functions
+    renderChartData: function(period) {
+        let chartData = [];
+        
+        if (period === 'year') {
+            chartData = [
+                { label: 'Jan', approved: 12, processing: 8, rejected: 4 },
+                { label: 'Feb', approved: 15, processing: 10, rejected: 3 },
+                { label: 'Mar', approved: 10, processing: 12, rejected: 5 },
+                { label: 'Apr', approved: 18, processing: 7, rejected: 2 },
+                { label: 'May', approved: 14, processing: 9, rejected: 6 },
+                { label: 'Jun', approved: 20, processing: 11, rejected: 4 },
+                { label: 'Jul', approved: 16, processing: 13, rejected: 3 },
+                { label: 'Aug', approved: 11, processing: 15, rejected: 5 },
+                { label: 'Sep', approved: 19, processing: 8, rejected: 4 },
+                { label: 'Oct', approved: 13, processing: 14, rejected: 6 },
+                { label: 'Nov', approved: 17, processing: 10, rejected: 5 },
+                { label: 'Dec', approved: 11, processing: 19, rejected: 3 }
+            ];
+        } else if (period === 'month') {
+            // December 2026 weekly breakdown (33 applications scattered across 5 weeks)
+            chartData = [
+                { label: 'Week 1', approved: 2, processing: 4, rejected: 1 },
+                { label: 'Week 2', approved: 3, processing: 5, rejected: 0 },
+                { label: 'Week 3', approved: 2, processing: 3, rejected: 1 },
+                { label: 'Week 4', approved: 3, processing: 4, rejected: 1 },
+                { label: 'Week 5', approved: 1, processing: 3, rejected: 0 }
+            ];
+        } else if (period === 'lastYear') {
+            chartData = [
+                { label: 'Jan', approved: 8, processing: 12, rejected: 3 },
+                { label: 'Feb', approved: 10, processing: 9, rejected: 4 },
+                { label: 'Mar', approved: 12, processing: 11, rejected: 2 },
+                { label: 'Apr', approved: 9, processing: 13, rejected: 5 },
+                { label: 'May', approved: 11, processing: 8, rejected: 3 },
+                { label: 'Jun', approved: 15, processing: 10, rejected: 4 },
+                { label: 'Jul', approved: 13, processing: 12, rejected: 2 },
+                { label: 'Aug', approved: 14, processing: 9, rejected: 6 },
+                { label: 'Sep', approved: 10, processing: 14, rejected: 3 },
+                { label: 'Oct', approved: 16, processing: 11, rejected: 5 },
+                { label: 'Nov', approved: 12, processing: 13, rejected: 4 },
+                { label: 'Dec', approved: 18, processing: 10, rejected: 3 }
+            ];
+        }
+        
+        const currentIndex = period === 'year' ? 11 : (period === 'month' ? 4 : -1); // Highlight current period
+        const maxHeight = 250;
+        
+        // Find the maximum total for scaling
+        const maxTotal = Math.max(...chartData.map(d => d.approved + d.processing + d.rejected));
+        const heightMultiplier = maxTotal > 0 ? maxHeight / maxTotal : 0;
+        
+        return chartData.map((data, i) => {
+            const total = data.approved + data.processing + data.rejected;
+            
+            const approvedHeight = data.approved * heightMultiplier;
+            const processingHeight = data.processing * heightMultiplier;
+            const rejectedHeight = data.rejected * heightMultiplier;
+            
+            const isCurrent = i === currentIndex;
+            const approvedColor = isCurrent ? '#10b981' : '#a7f3d0';
+            const processingColor = isCurrent ? '#f59e0b' : '#fcd34d';
+            const rejectedColor = isCurrent ? '#ef4444' : '#fca5a5';
+            
+            return `
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                <div style="width: 100%; display: flex; flex-direction: column-reverse; min-height: 20px;">
+                    ${total > 0 ? `
+                        <div style="width: 100%; height: ${approvedHeight}px; background: ${approvedColor}; border-radius: ${data.processing === 0 && data.rejected === 0 ? '4px 4px 0 0' : '0'}; transition: all 0.3s;" title="Approved: ${data.approved}"></div>
+                        ${data.processing > 0 ? `<div style="width: 100%; height: ${processingHeight}px; background: ${processingColor}; transition: all 0.3s;" title="Processing: ${data.processing}"></div>` : ''}
+                        ${data.rejected > 0 ? `<div style="width: 100%; height: ${rejectedHeight}px; background: ${rejectedColor}; border-radius: 4px 4px 0 0; transition: all 0.3s;" title="Rejected: ${data.rejected}"></div>` : ''}
+                    ` : '<div style="width: 100%; height: 20px; background: #f1f5f9; border-radius: 4px 4px 0 0;"></div>'}
+                </div>
+                <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; font-weight: ${isCurrent ? '700' : '400'};">${data.label}</span>
+                ${total > 0 ? `<span style="font-size: 0.65rem; color: var(--text-main); margin-top: 2px; font-weight: 600;">${total}</span>` : ''}
+            </div>
+            `;
+        }).join('');
+    },
+
+    updateChartView: function(period) {
+        const chartContainer = document.getElementById('performance-chart');
+        if (chartContainer) {
+            chartContainer.innerHTML = this.renderChartData(period);
+        }
+    },
+
     views: {
         dashboard: function () {
             const metrics = app.calculateMetrics();
@@ -1145,7 +1441,7 @@ var app = {
                             <span class="kpi-trend trend-up"><i class="ph ph-trend-up"></i> ${metrics.approvalRate}% Rate</span>
                         </div>
                         <div class="card kpi-card">
-                            <span class="kpi-label">Total Processing</span>
+                            <span class="kpi-label">Processing</span>
                             <span class="kpi-value" style="color: var(--warning-color)">${metrics.pending + metrics.additionalInfo}</span>
                             <span class="kpi-trend"><i class="ph ph-clock"></i> In Progress</span>
                         </div>
@@ -1162,17 +1458,32 @@ var app = {
                         <div class="card" style="min-height: 400px; display: flex; flex-direction: column;">
                             <div class="flex justify-between items-center" style="margin-bottom: 24px;">
                                 <h3>Performance Overview</h3>
-                                <select style="font-size: 0.85rem; padding: 4px 8px;"><option>This Year</option><option>Last Year</option></select>
+                                <select id="chart-period-selector" style="font-size: 0.85rem; padding: 4px 8px;" onchange="app.updateChartView(this.value)">
+                                    <option value="year">This Year</option>
+                                    <option value="month">This Month</option>
+                                    <option value="lastYear">Last Year</option>
+                                </select>
                             </div>
                             
-                            <!-- CSS/SVG Chart Simulation -->
-                            <div style="flex: 1; display: flex; align-items: flex-end; justify-content: space-around; padding: 0 16px; gap: 8px;">
-                                ${[40, 65, 45, 80, 55, 90, 70, 85, 60, 75, 50, 95].map((h, i) => `
-                                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                                        <div style="width: 100%; height: ${h * 2.5}px; background: ${i === 11 ? 'var(--accent-color)' : '#e2e8f0'}; border-radius: 4px 4px 0 0; transition: all 0.3s; opacity: 0.8;"></div>
-                                        <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 8px;">${['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][i]}</span>
-                                    </div>
-                                `).join('')}
+                            <!-- CSS/SVG Chart Simulation - Stacked Bar Chart -->
+                            <div id="performance-chart" style="flex: 1; display: flex; align-items: flex-end; justify-content: space-around; padding: 0 16px; gap: 8px;">
+                                ${app.renderChartData('year')}
+                            </div>
+                            
+                            <!-- Legend -->
+                            <div style="display: flex; justify-content: center; gap: 24px; margin-top: 16px; padding: 12px; background: #f8fafc; border-radius: 6px;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="width: 12px; height: 12px; background: #10b981; border-radius: 2px;"></div>
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);">Approved</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="width: 12px; height: 12px; background: #f59e0b; border-radius: 2px;"></div>
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);">Processing</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="width: 12px; height: 12px; background: #ef4444; border-radius: 2px;"></div>
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);">Rejected</span>
+                                </div>
                             </div>
                         </div>
 
@@ -1237,6 +1548,36 @@ var app = {
             const filterTitle = filterRef ? ` - Filtered by Upload: ${filterRef}` : '';
             const clearFilterBtn = filterRef ? `<button class="btn btn-outline" onclick="app.clearUploadFilter()" style="margin-left: 12px;"><i class="ph ph-x"></i> Clear Filter</button>` : '';
 
+            // Get current filter values
+            const filters = app.state.trackingFilters;
+
+            // Get filtered applications
+            let filteredApps = app.getFilteredApplications();
+            
+            // Generate table rows
+            const tableRows = filteredApps.length > 0 ? filteredApps.map(application => {
+                const statusBadge = app.getStatusBadge(application.loan.status);
+                return `
+                    <tr>
+                        <td style="font-weight: 500;">${application.uploadRefNumber}</td>
+                        <td style="font-weight: 500;">${application.id}</td>
+                        <td>${application.customer.fullName}</td>
+                        <td>${application.loan.product}</td>
+                        <td style="text-align: right;">${app.formatNumber(application.loan.amountRequested, true)}</td>
+                        <td>${statusBadge}</td>
+                        <td>${application.loan.submissionDate || '-'}</td>
+                        <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '${application.id}')"><i class="ph ph-caret-right"></i></button></td>
+                    </tr>
+                `;
+            }).join('') : `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 40px; color: #94a3b8;">
+                        <i class="ph ph-magnifying-glass" style="font-size: 3rem; display: block; margin-bottom: 12px;"></i>
+                        No applications found matching your criteria.
+                    </td>
+                </tr>
+            `;
+
             return `
                 <div class="page-wrapper">
                 <div class="flex justify-between items-center" style="margin-bottom: 24px;">
@@ -1250,36 +1591,39 @@ var app = {
                         <div class="form-grid-dense" style="grid-template-columns: repeat(5, 1fr); margin: 0; gap: 16px;">
                             <div class="form-group stacked">
                                 <label style="text-align: left;">Upload Reference</label>
-                                <input type="text" placeholder="e.g. UPL20260130-001" style="width: 100%;" ${filterRef ? `value="${filterRef}" disabled` : ''}>
+                                <input type="text" id="filter-upload-ref" placeholder="e.g. UPL20260130-001" style="width: 100%;" value="${filterRef || filters.uploadRef}" ${filterRef ? 'disabled' : ''}>
                             </div>
                             <div class="form-group stacked">
                                 <label style="text-align: left;">Application ID</label>
-                                <input type="text" placeholder="e.g. #APP-2023-..." style="width: 100%;">
+                                <input type="text" id="filter-app-id" placeholder="e.g. #APP-2023-..." style="width: 100%;" value="${filters.appId}">
                             </div>
                             <div class="form-group stacked">
                                 <label style="text-align: left;">Customer Name</label>
-                                <input type="text" placeholder="e.g. Alice Wong" style="width: 100%;">
+                                <input type="text" id="filter-customer-name" placeholder="e.g. Alice Wong" style="width: 100%;" value="${filters.customerName}">
                             </div>
                             <div class="form-group stacked">
                                 <label style="text-align: left;">Status</label>
-                                <select style="width: 100%;">
+                                <select id="filter-status" style="width: 100%;">
                                     <option value="">All Statuses</option>
-                                    <option value="Draft">Draft</option>
-                                    <option value="Submitted">Submitted</option>
-                                    <option value="Under Review">Under Review</option>
-                                    <option value="Additional Info">Additional Info Required</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Rejected">Rejected</option>
-                                    <option value="Cancelled">Cancelled</option>
+                                    <option value="Draft" ${filters.status === 'Draft' ? 'selected' : ''}>Draft</option>
+                                    <option value="Submitted" ${filters.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
+                                    <option value="Under Review" ${filters.status === 'Under Review' ? 'selected' : ''}>Under Review</option>
+                                    <option value="Additional Info Required" ${filters.status === 'Additional Info Required' ? 'selected' : ''}>Additional Info Required</option>
+                                    <option value="Approved" ${filters.status === 'Approved' ? 'selected' : ''}>Approved</option>
+                                    <option value="Rejected" ${filters.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+                                    <option value="Cancelled" ${filters.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
                                 </select>
                             </div>
                             <div class="form-group stacked">
                                 <label style="text-align: left;">Submission Date</label>
-                                <input type="date" style="width: 100%;">
+                                <input type="date" id="filter-submission-date" style="width: 100%;" value="${filters.submissionDate}">
                             </div>
                         </div>
-                        <div style="display: flex; justify-content: flex-end;">
-                            <button class="btn btn-primary" style="height: 42px; padding: 0 24px;">
+                        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                            <button class="btn btn-outline" onclick="app.resetTrackingFilters()" style="height: 42px; padding: 0 24px;">
+                                <i class="ph ph-x"></i> Reset
+                            </button>
+                            <button class="btn btn-primary" onclick="app.applyTrackingFilters()" style="height: 42px; padding: 0 24px;">
                                 <i class="ph ph-magnifying-glass"></i> Search
                             </button>
                         </div>
@@ -1303,85 +1647,12 @@ var app = {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td style="font-weight: 500;">UPL20260130-001</td>
-                                    <td style="font-weight: 500;">#APP-2023-889</td>
-                                    <td>Alice Wong</td>
-                                    <td>Personal-i</td>
-                                    <td style="text-align: right;">${app.formatNumber('RM 5,000', true)}</td>
-                                    <td><span class="badge badge-success">Approved</span></td>
-                                    <td>Oct 28, 2023 10:30 AM</td>
-                                    <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-889')"><i class="ph ph-caret-right"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: 500;">UPL20260130-001</td>
-                                    <td style="font-weight: 500;">#APP-2023-892</td>
-                                    <td>Kumar R.</td>
-                                    <td>Home Reno</td>
-                                    <td style="text-align: right;">${app.formatNumber('RM 25,000', true)}</td>
-                                    <td><span class="badge badge-warning">Additional Info Required</span></td>
-                                    <td>Oct 28, 2023 09:15 AM</td>
-                                    <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-892')"><i class="ph ph-caret-right"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: 500;">UPL20260128-002</td>
-                                    <td style="font-weight: 500;">#APP-2023-901</td>
-                                    <td>Tan Ah Beng</td>
-                                    <td>Biz Micro</td>
-                                    <td style="text-align: right;">${app.formatNumber('RM 50,000', true)}</td>
-                                    <td><span class="badge badge-blue">Under Review</span></td>
-                                    <td>Oct 27, 2023 04:45 PM</td>
-                                    <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-901')"><i class="ph ph-caret-right"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: 500;">UPL20260128-002</td>
-                                    <td style="font-weight: 500;">#APP-2023-905</td>
-                                    <td>Siti Aminah</td>
-                                    <td>Car Loan</td>
-                                    <td style="text-align: right;">${app.formatNumber('RM 80,000', true)}</td>
-                                    <td><span class="badge badge-error" style="background: #fee2e2; color: #ef4444;">Rejected</span></td>
-                                    <td>Oct 27, 2023 02:20 PM</td>
-                                    <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-905')"><i class="ph ph-caret-right"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: 500;">UPL20260125-001</td>
-                                    <td style="font-weight: 500;">#APP-2023-910</td>
-                                    <td>John Doe</td>
-                                    <td>Personal</td>
-                                    <td style="text-align: right;">${app.formatNumber('RM 12,000', true)}</td>
-                                    <td><span class="badge badge-blue" style="background: #e0f2fe; color: #0284c7;">Submitted</span></td>
-                                    <td>Oct 26, 2023 11:30 AM</td>
-                                    <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-910')"><i class="ph ph-caret-right"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: 500;">UPL20260125-001</td>
-                                    <td style="font-weight: 500;">#APP-2023-912</td>
-                                    <td>Michelle Tan</td>
-                                    <td>Housing Loan</td>
-                                    <td style="text-align: right;">${app.formatNumber('RM 350,000', true)}</td>
-                                    <td><span class="badge" style="background: #f1f5f9; color: #64748b;">Draft</span></td>
-                                    <td>-</td>
-                                    <td><button class="icon-btn" onclick="app.navigate('applicationDetails', '#APP-2023-912')"><i class="ph ph-caret-right"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: 500;">UPL20260120-003</td>
-                                    <td style="font-weight: 500;">#APP-2023-855</td>
-                                    <td>Rajesh K.</td>
-                                    <td>Personal-i</td>
-                                    <td style="text-align: right;">${app.formatNumber('RM 10,000', true)}</td>
-                                    <td><span class="badge" style="background: #fee2e2; color: #991b1b;">Cancelled</span></td>
-                                    <td>Oct 20, 2023 09:00 AM</td>
-                                    <td><button class="icon-btn"><i class="ph ph-caret-right"></i></button></td>
-                                </tr>
+                                ${tableRows}
                             </tbody>
                         </table>
                     </div>
                     <div style="padding: 16px 24px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 0.85rem;">
-                        <span>Showing 1-7 of 128 results</span>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="icon-btn" disabled><i class="ph ph-caret-left"></i></button>
-                            <button class="icon-btn"><i class="ph ph-caret-right"></i></button>
-                        </div>
+                        <span>Showing ${filteredApps.length} of ${app.state.applications.length} results</span>
                     </div>
                 </div>
                 </div>
@@ -2140,6 +2411,99 @@ var app = {
     clearUploadFilter: function () {
         this.state.filterByUploadRef = null;
         this.navigate('tracking');
+    },
+
+    // Helper: Apply Tracking Filters
+    applyTrackingFilters: function () {
+        const uploadRef = document.getElementById('filter-upload-ref')?.value.trim() || '';
+        const appId = document.getElementById('filter-app-id')?.value.trim() || '';
+        const customerName = document.getElementById('filter-customer-name')?.value.trim() || '';
+        const status = document.getElementById('filter-status')?.value || '';
+        const submissionDate = document.getElementById('filter-submission-date')?.value || '';
+
+        this.state.trackingFilters = {
+            uploadRef,
+            appId,
+            customerName,
+            status,
+            submissionDate
+        };
+
+        this.navigate('tracking');
+    },
+
+    // Helper: Reset Tracking Filters
+    resetTrackingFilters: function () {
+        this.state.trackingFilters = {
+            uploadRef: '',
+            appId: '',
+            customerName: '',
+            status: '',
+            submissionDate: ''
+        };
+        this.state.filterByUploadRef = null;
+        this.navigate('tracking');
+    },
+
+    // Helper: Get Filtered Applications
+    getFilteredApplications: function () {
+        let filtered = this.state.applications;
+
+        // Apply upload ref filter (from bulk upload click or filter form)
+        const uploadRef = this.state.filterByUploadRef || this.state.trackingFilters.uploadRef;
+        if (uploadRef) {
+            filtered = filtered.filter(app => 
+                app.uploadRefNumber.toLowerCase().includes(uploadRef.toLowerCase())
+            );
+        }
+
+        // Apply application ID filter
+        if (this.state.trackingFilters.appId) {
+            filtered = filtered.filter(app => 
+                app.id.toLowerCase().includes(this.state.trackingFilters.appId.toLowerCase())
+            );
+        }
+
+        // Apply customer name filter
+        if (this.state.trackingFilters.customerName) {
+            filtered = filtered.filter(app => 
+                app.customer.fullName.toLowerCase().includes(this.state.trackingFilters.customerName.toLowerCase())
+            );
+        }
+
+        // Apply status filter
+        if (this.state.trackingFilters.status) {
+            filtered = filtered.filter(app => 
+                app.loan.status === this.state.trackingFilters.status
+            );
+        }
+
+        // Apply submission date filter
+        if (this.state.trackingFilters.submissionDate) {
+            filtered = filtered.filter(app => {
+                if (!app.loan.submissionDate) return false;
+                // Extract date from "Oct 28, 2023 10:30 AM" format
+                const appDate = new Date(app.loan.submissionDate);
+                const filterDate = new Date(this.state.trackingFilters.submissionDate);
+                return appDate.toDateString() === filterDate.toDateString();
+            });
+        }
+
+        return filtered;
+    },
+
+    // Helper: Get Status Badge HTML
+    getStatusBadge: function (status) {
+        const badges = {
+            'Approved': '<span class="badge badge-success">Approved</span>',
+            'Rejected': '<span class="badge badge-error" style="background: #fee2e2; color: #ef4444;">Rejected</span>',
+            'Under Review': '<span class="badge badge-blue">Under Review</span>',
+            'Submitted': '<span class="badge badge-blue" style="background: #e0f2fe; color: #0284c7;">Submitted</span>',
+            'Additional Info Required': '<span class="badge badge-warning">Additional Info Required</span>',
+            'Draft': '<span class="badge" style="background: #f1f5f9; color: #64748b;">Draft</span>',
+            'Cancelled': '<span class="badge" style="background: #fee2e2; color: #991b1b;">Cancelled</span>'
+        };
+        return badges[status] || `<span class="badge">${status}</span>`;
     },
 
     resubmitApplication: function (appId) {
