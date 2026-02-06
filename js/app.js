@@ -11,7 +11,7 @@ var app = {
             {
                 uploadRefNumber: 'UPL20260130-001',
                 fileName: 'batch_upload_v2.csv',
-                noOfApplications: 15,
+                noOfApplications: 10,
                 status: 'Submitted to Bank',
                 uploadedDateTime: 'Jan 30, 2026, 10:30 AM'
             },
@@ -25,14 +25,14 @@ var app = {
             {
                 uploadRefNumber: 'UPL20260125-001',
                 fileName: 'personal_loans_batch1.csv',
-                noOfApplications: 12,
+                noOfApplications: 9,
                 status: 'Pending Documents Upload',
                 uploadedDateTime: 'Jan 25, 2026, 02:20 PM'
             },
             {
                 uploadRefNumber: 'UPL20260120-003',
                 fileName: 'legacy_data_import.csv',
-                noOfApplications: 45,
+                noOfApplications: 3,
                 status: 'Cancelled',
                 uploadedDateTime: 'Jan 20, 2026, 04:45 PM'
             }
@@ -270,6 +270,435 @@ var app = {
                 },
                 bankRemark: 'Proof of address required',
                 bankDescription: 'We require proof of your current residential address. Please submit one of the following: recent utility bill (electricity/water/gas), tenancy agreement, or property tax document dated within the last 3 months.'
+            },
+            // Additional UPL20260130-001 applications (7 more to reach 10 total)
+            {
+                id: '#APP-2023-895',
+                uploadRefNumber: 'UPL20260130-001',
+                customer: {
+                    fullName: 'Ahmad Zaki',
+                    nric: '901234-56-7890',
+                    phone: '+60-12-678-9012',
+                    email: 'ahmad.zaki@email.com',
+                    residentialAddress: '111 Jalan Ampang, Kuala Lumpur, 50450, Malaysia',
+                    mailingAddress: '111 Jalan Ampang, Kuala Lumpur, 50450, Malaysia',
+                    employer: 'Government Agency',
+                    salary: 'RM 6,200',
+                    occupation: 'Civil Servant'
+                },
+                loan: {
+                    product: 'Personal-i',
+                    amountRequested: 'RM 18,000',
+                    tenure: '48 months',
+                    interestRate: '5.3% (Fixed)',
+                    amountApproved: 'RM 18,000',
+                    purpose: 'Education',
+                    status: 'Approved',
+                    submissionDate: 'Oct 28, 2023 11:45 AM'
+                }
+            },
+            {
+                id: '#APP-2023-896',
+                uploadRefNumber: 'UPL20260130-001',
+                customer: {
+                    fullName: 'Lim Siew Mei',
+                    nric: '012345-67-8901',
+                    phone: '+60-13-890-1234',
+                    email: 'lim.siewmei@email.com',
+                    residentialAddress: '222 Taman Desa, Kuala Lumpur, 58100, Malaysia',
+                    mailingAddress: '222 Taman Desa, Kuala Lumpur, 58100, Malaysia',
+                    employer: 'Banking Sector',
+                    salary: 'RM 8,500',
+                    occupation: 'Bank Officer'
+                },
+                loan: {
+                    product: 'Car Loan',
+                    amountRequested: 'RM 95,000',
+                    tenure: '72 months',
+                    interestRate: '3.7% (Fixed)',
+                    amountApproved: 'RM 90,000',
+                    purpose: 'Vehicle Purchase',
+                    status: 'Approved',
+                    submissionDate: 'Oct 28, 2023 01:20 PM'
+                }
+            },
+            {
+                id: '#APP-2023-897',
+                uploadRefNumber: 'UPL20260130-001',
+                customer: {
+                    fullName: 'Raj Kumar',
+                    nric: '123456-78-9013',
+                    phone: '+60-14-012-3456',
+                    email: 'raj.kumar@email.com',
+                    residentialAddress: '333 Bangsar South, Kuala Lumpur, 59200, Malaysia',
+                    mailingAddress: '333 Bangsar South, Kuala Lumpur, 59200, Malaysia',
+                    employer: 'IT Consulting',
+                    salary: 'RM 9,000',
+                    occupation: 'IT Consultant'
+                },
+                loan: {
+                    product: 'Personal',
+                    amountRequested: 'RM 20,000',
+                    tenure: '36 months',
+                    interestRate: '5.0% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Debt Consolidation',
+                    status: 'Under Review',
+                    submissionDate: 'Oct 28, 2023 02:30 PM'
+                }
+            },
+            {
+                id: '#APP-2023-898',
+                uploadRefNumber: 'UPL20260130-001',
+                customer: {
+                    fullName: 'Nurul Huda',
+                    nric: '234567-89-0124',
+                    phone: '+60-15-234-5679',
+                    email: 'nurul.huda@email.com',
+                    residentialAddress: '444 Wangsa Maju, Kuala Lumpur, 53300, Malaysia',
+                    mailingAddress: '444 Wangsa Maju, Kuala Lumpur, 53300, Malaysia',
+                    employer: 'Education Sector',
+                    salary: 'RM 4,800',
+                    occupation: 'Teacher'
+                },
+                loan: {
+                    product: 'Personal-i',
+                    amountRequested: 'RM 10,000',
+                    tenure: '24 months',
+                    interestRate: '5.5% (Fixed)',
+                    amountApproved: 'RM 10,000',
+                    purpose: 'Medical Expenses',
+                    status: 'Approved',
+                    submissionDate: 'Oct 28, 2023 03:15 PM'
+                }
+            },
+            {
+                id: '#APP-2023-899',
+                uploadRefNumber: 'UPL20260130-001',
+                customer: {
+                    fullName: 'Chen Wei',
+                    nric: '345678-90-1235',
+                    phone: '+60-16-456-7890',
+                    email: 'chen.wei@email.com',
+                    residentialAddress: '555 Mont Kiara, Kuala Lumpur, 50480, Malaysia',
+                    mailingAddress: '555 Mont Kiara, Kuala Lumpur, 50480, Malaysia',
+                    employer: 'Real Estate',
+                    salary: 'RM 12,000',
+                    occupation: 'Property Agent'
+                },
+                loan: {
+                    product: 'Biz Micro',
+                    amountRequested: 'RM 40,000',
+                    tenure: '48 months',
+                    interestRate: '6.2% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Business Capital',
+                    status: 'Submitted',
+                    submissionDate: 'Oct 28, 2023 04:00 PM'
+                }
+            },
+            {
+                id: '#APP-2023-900',
+                uploadRefNumber: 'UPL20260130-001',
+                customer: {
+                    fullName: 'Fatimah Zahra',
+                    nric: '456789-01-2346',
+                    phone: '+60-17-678-9012',
+                    email: 'fatimah.zahra@email.com',
+                    residentialAddress: '666 Cheras, Kuala Lumpur, 56100, Malaysia',
+                    mailingAddress: '666 Cheras, Kuala Lumpur, 56100, Malaysia',
+                    employer: 'Retail Industry',
+                    salary: 'RM 3,800',
+                    occupation: 'Store Manager'
+                },
+                loan: {
+                    product: 'Personal',
+                    amountRequested: 'RM 8,000',
+                    tenure: '24 months',
+                    interestRate: '5.8% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Personal Expense',
+                    status: 'Rejected',
+                    submissionDate: 'Oct 28, 2023 04:45 PM'
+                }
+            },
+            // Additional UPL20260128-002 applications (5 more to reach 8 total)
+            {
+                id: '#APP-2023-902',
+                uploadRefNumber: 'UPL20260128-002',
+                customer: {
+                    fullName: 'Hassan Ibrahim',
+                    nric: '567890-12-3457',
+                    phone: '+60-18-901-2345',
+                    email: 'hassan.ibrahim@email.com',
+                    residentialAddress: '777 Setapak, Kuala Lumpur, 53000, Malaysia',
+                    mailingAddress: '777 Setapak, Kuala Lumpur, 53000, Malaysia',
+                    employer: 'Transportation',
+                    salary: 'RM 5,200',
+                    occupation: 'Logistics Manager'
+                },
+                loan: {
+                    product: 'Car Loan',
+                    amountRequested: 'RM 70,000',
+                    tenure: '84 months',
+                    interestRate: '3.9% (Fixed)',
+                    amountApproved: 'RM 70,000',
+                    purpose: 'Vehicle Purchase',
+                    status: 'Approved',
+                    submissionDate: 'Oct 27, 2023 10:30 AM'
+                }
+            },
+            {
+                id: '#APP-2023-903',
+                uploadRefNumber: 'UPL20260128-002',
+                customer: {
+                    fullName: 'Lee Hui Ling',
+                    nric: '678901-23-4568',
+                    phone: '+60-19-123-4567',
+                    email: 'lee.huiling@email.com',
+                    residentialAddress: '888 Kepong, Kuala Lumpur, 52100, Malaysia',
+                    mailingAddress: '888 Kepong, Kuala Lumpur, 52100, Malaysia',
+                    employer: 'Manufacturing',
+                    salary: 'RM 4,500',
+                    occupation: 'Production Supervisor'
+                },
+                loan: {
+                    product: 'Personal-i',
+                    amountRequested: 'RM 15,000',
+                    tenure: '36 months',
+                    interestRate: '5.6% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Home Improvement',
+                    status: 'Under Review',
+                    submissionDate: 'Oct 27, 2023 11:15 AM'
+                }
+            },
+            {
+                id: '#APP-2023-904',
+                uploadRefNumber: 'UPL20260128-002',
+                customer: {
+                    fullName: 'Muthu Krishnan',
+                    nric: '789012-34-5679',
+                    phone: '+60-11-345-6789',
+                    email: 'muthu.krishnan@email.com',
+                    residentialAddress: '999 Sentul, Kuala Lumpur, 51000, Malaysia',
+                    mailingAddress: '999 Sentul, Kuala Lumpur, 51000, Malaysia',
+                    employer: 'Construction',
+                    salary: 'RM 6,800',
+                    occupation: 'Site Engineer'
+                },
+                loan: {
+                    product: 'Home Reno',
+                    amountRequested: 'RM 35,000',
+                    tenure: '60 months',
+                    interestRate: '4.7% (Fixed)',
+                    amountApproved: 'RM 35,000',
+                    purpose: 'Home Renovation',
+                    status: 'Approved',
+                    submissionDate: 'Oct 27, 2023 01:45 PM'
+                }
+            },
+            {
+                id: '#APP-2023-906',
+                uploadRefNumber: 'UPL20260128-002',
+                customer: {
+                    fullName: 'Sarah Tan',
+                    nric: '890123-45-6780',
+                    phone: '+60-12-567-8901',
+                    email: 'sarah.tan@email.com',
+                    residentialAddress: '101 Bukit Jalil, Kuala Lumpur, 57000, Malaysia',
+                    mailingAddress: '101 Bukit Jalil, Kuala Lumpur, 57000, Malaysia',
+                    employer: 'Hospitality',
+                    salary: 'RM 5,500',
+                    occupation: 'Hotel Manager'
+                },
+                loan: {
+                    product: 'Personal',
+                    amountRequested: 'RM 22,000',
+                    tenure: '48 months',
+                    interestRate: '5.4% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Wedding',
+                    status: 'Submitted',
+                    submissionDate: 'Oct 27, 2023 03:30 PM'
+                }
+            },
+            // Additional UPL20260125-001 applications (6 more to reach 9 total)
+            {
+                id: '#APP-2023-911',
+                uploadRefNumber: 'UPL20260125-001',
+                customer: {
+                    fullName: 'Azman Yusof',
+                    nric: '901234-56-7891',
+                    phone: '+60-13-789-0123',
+                    email: 'azman.yusof@email.com',
+                    residentialAddress: '202 Ampang, Kuala Lumpur, 68000, Malaysia',
+                    mailingAddress: '202 Ampang, Kuala Lumpur, 68000, Malaysia',
+                    employer: 'Telecommunications',
+                    salary: 'RM 7,200',
+                    occupation: 'Network Engineer'
+                },
+                loan: {
+                    product: 'Car Loan',
+                    amountRequested: 'RM 85,000',
+                    tenure: '72 months',
+                    interestRate: '3.8% (Fixed)',
+                    amountApproved: 'RM 85,000',
+                    purpose: 'Vehicle Purchase',
+                    status: 'Approved',
+                    submissionDate: 'Oct 26, 2023 09:00 AM'
+                }
+            },
+            {
+                id: '#APP-2023-913',
+                uploadRefNumber: 'UPL20260125-001',
+                customer: {
+                    fullName: 'Kavitha Devi',
+                    nric: '012345-67-8902',
+                    phone: '+60-14-901-2346',
+                    email: 'kavitha.devi@email.com',
+                    residentialAddress: '303 Puchong, Selangor, 47100, Malaysia',
+                    mailingAddress: '303 Puchong, Selangor, 47100, Malaysia',
+                    employer: 'Pharmaceutical',
+                    salary: 'RM 6,500',
+                    occupation: 'Pharmacist'
+                },
+                loan: {
+                    product: 'Personal-i',
+                    amountRequested: 'RM 25,000',
+                    tenure: '48 months',
+                    interestRate: '5.2% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Business Investment',
+                    status: 'Under Review',
+                    submissionDate: 'Oct 26, 2023 10:45 AM'
+                }
+            },
+            {
+                id: '#APP-2023-915',
+                uploadRefNumber: 'UPL20260125-001',
+                customer: {
+                    fullName: 'Daniel Ng',
+                    nric: '123456-78-9014',
+                    phone: '+60-15-123-4568',
+                    email: 'daniel.ng@email.com',
+                    residentialAddress: '404 Subang Jaya, Selangor, 47500, Malaysia',
+                    mailingAddress: '404 Subang Jaya, Selangor, 47500, Malaysia',
+                    employer: 'Aviation',
+                    salary: 'RM 9,500',
+                    occupation: 'Pilot'
+                },
+                loan: {
+                    product: 'Housing Loan',
+                    amountRequested: 'RM 450,000',
+                    tenure: '360 months',
+                    interestRate: '3.3% (Fixed)',
+                    amountApproved: 'RM 450,000',
+                    purpose: 'Property Purchase',
+                    status: 'Approved',
+                    submissionDate: 'Oct 26, 2023 01:30 PM'
+                }
+            },
+            {
+                id: '#APP-2023-916',
+                uploadRefNumber: 'UPL20260125-001',
+                customer: {
+                    fullName: 'Aisha Rahman',
+                    nric: '234567-89-0125',
+                    phone: '+60-16-345-6780',
+                    email: 'aisha.rahman@email.com',
+                    residentialAddress: '505 Shah Alam, Selangor, 40000, Malaysia',
+                    mailingAddress: '505 Shah Alam, Selangor, 40000, Malaysia',
+                    employer: 'Legal Firm',
+                    salary: 'RM 8,000',
+                    occupation: 'Lawyer'
+                },
+                loan: {
+                    product: 'Biz Micro',
+                    amountRequested: 'RM 55,000',
+                    tenure: '60 months',
+                    interestRate: '6.0% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Business Expansion',
+                    status: 'Submitted',
+                    submissionDate: 'Oct 26, 2023 02:15 PM'
+                }
+            },
+            {
+                id: '#APP-2023-917',
+                uploadRefNumber: 'UPL20260125-001',
+                customer: {
+                    fullName: 'Vincent Chong',
+                    nric: '345678-90-1236',
+                    phone: '+60-17-567-8902',
+                    email: 'vincent.chong@email.com',
+                    residentialAddress: '606 Klang, Selangor, 41000, Malaysia',
+                    mailingAddress: '606 Klang, Selangor, 41000, Malaysia',
+                    employer: 'Insurance',
+                    salary: 'RM 7,800',
+                    occupation: 'Insurance Agent'
+                },
+                loan: {
+                    product: 'Personal',
+                    amountRequested: 'RM 18,000',
+                    tenure: '36 months',
+                    interestRate: '5.3% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Travel',
+                    status: 'Rejected',
+                    submissionDate: 'Oct 26, 2023 03:45 PM'
+                }
+            },
+            // Additional UPL20260120-003 applications (2 more to reach 3 total)
+            {
+                id: '#APP-2023-856',
+                uploadRefNumber: 'UPL20260120-003',
+                customer: {
+                    fullName: 'Salmah Ismail',
+                    nric: '456789-01-2347',
+                    phone: '+60-18-789-0124',
+                    email: 'salmah.ismail@email.com',
+                    residentialAddress: '707 Kajang, Selangor, 43000, Malaysia',
+                    mailingAddress: '707 Kajang, Selangor, 43000, Malaysia',
+                    employer: 'Government',
+                    salary: 'RM 5,000',
+                    occupation: 'Administrative Officer'
+                },
+                loan: {
+                    product: 'Personal-i',
+                    amountRequested: 'RM 12,000',
+                    tenure: '36 months',
+                    interestRate: '5.5% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Education',
+                    status: 'Cancelled',
+                    submissionDate: 'Oct 20, 2023 10:30 AM'
+                }
+            },
+            {
+                id: '#APP-2023-857',
+                uploadRefNumber: 'UPL20260120-003',
+                customer: {
+                    fullName: 'Robert Tan',
+                    nric: '567890-12-3458',
+                    phone: '+60-19-012-3457',
+                    email: 'robert.tan@email.com',
+                    residentialAddress: '808 Seremban, Negeri Sembilan, 70000, Malaysia',
+                    mailingAddress: '808 Seremban, Negeri Sembilan, 70000, Malaysia',
+                    employer: 'Engineering',
+                    salary: 'RM 6,000',
+                    occupation: 'Mechanical Engineer'
+                },
+                loan: {
+                    product: 'Car Loan',
+                    amountRequested: 'RM 75,000',
+                    tenure: '72 months',
+                    interestRate: '3.9% (Fixed)',
+                    amountApproved: null,
+                    purpose: 'Vehicle Purchase',
+                    status: 'Cancelled',
+                    submissionDate: 'Oct 20, 2023 11:45 AM'
+                }
             }
         ],
         messages: [
@@ -286,7 +715,7 @@ var app = {
                 id: 2,
                 from: 'System Notification',
                 subject: 'Batch Upload UPL20260130-001 Complete',
-                content: 'Your bulk upload has been successfully processed. 15 applications have been submitted for review.',
+                content: 'Your bulk upload has been successfully processed. 10 applications have been submitted for review.',
                 timestamp: 'Jan 30, 2026, 10:45 AM',
                 read: false,
                 type: 'notification'

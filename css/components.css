@@ -303,6 +303,12 @@ td {
     padding: 16px;
     border-bottom: 1px solid #f1f5f9;
     color: var(--text-main);
+    vertical-align: middle;
+}
+
+/* Center align status column */
+td:has(.badge) {
+    text-align: center;
 }
 
 tr:last-child td {
