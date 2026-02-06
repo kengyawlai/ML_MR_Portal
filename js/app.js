@@ -2139,7 +2139,7 @@ var app = {
                                             ${upload.fileName}
                                         </td>
                                         <td>${upload.noOfApplications}</td>
-                                        <td>${app.getStatusBadge(upload.status)}</td>
+                                        <td>${app.getBulkUploadStatusBadge(upload.status)}</td>
                                         <td>${upload.uploadedDateTime}</td>
                                         <td>${app.getActionButtons(upload.status)}</td>
                                     </tr>
@@ -2501,6 +2501,17 @@ var app = {
             'Submitted': '<span class="badge badge-blue" style="background: #e0f2fe; color: #0284c7;">Submitted</span>',
             'Additional Info Required': '<span class="badge badge-warning">Additional Info Required</span>',
             'Draft': '<span class="badge" style="background: #f1f5f9; color: #64748b;">Draft</span>',
+            'Cancelled': '<span class="badge" style="background: #fee2e2; color: #991b1b;">Cancelled</span>'
+        };
+        return badges[status] || `<span class="badge">${status}</span>`;
+    },
+
+    // Helper: Get Bulk Upload Status Badge HTML
+    getBulkUploadStatusBadge: function (status) {
+        const badges = {
+            'Submitted to Bank': '<span class="badge badge-success" style="background: #d1fae5; color: #065f46;">Submitted to Bank</span>',
+            'Pending Submission to Bank': '<span class="badge badge-blue" style="background: #dbeafe; color: #1e40af;">Pending Submission to Bank</span>',
+            'Pending Documents Upload': '<span class="badge badge-warning" style="background: #fef3c7; color: #92400e;">Pending Documents Upload</span>',
             'Cancelled': '<span class="badge" style="background: #fee2e2; color: #991b1b;">Cancelled</span>'
         };
         return badges[status] || `<span class="badge">${status}</span>`;
