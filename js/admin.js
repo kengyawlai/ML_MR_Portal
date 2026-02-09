@@ -651,20 +651,6 @@ var admin = {
                             `;
                         }).join('')}
                     </div>
-                    <div style="padding: 16px 24px; border-top: 1px solid #f1f5f9; display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <div style="width: 12px; height: 12px; background: #10b981; border-radius: 2px;"></div>
-                            <span style="font-size: 0.85rem; color: var(--text-muted);">Approved</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <div style="width: 12px; height: 12px; background: #f59e0b; border-radius: 2px;"></div>
-                            <span style="font-size: 0.85rem; color: var(--text-muted);">Pending</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <div style="width: 12px; height: 12px; background: #ef4444; border-radius: 2px;"></div>
-                            <span style="font-size: 0.85rem; color: var(--text-muted);">Rejected</span>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Agent Details Modal Placeholder -->
