@@ -1063,6 +1063,32 @@ var app = {
 
     login: function () {
         console.log('Login function called');
+        
+        // Get credentials
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        
+        // Check if admin credentials
+        if (username === 'alan.super' && password === 'alansuper') {
+            // Store user type for MFA verification
+            sessionStorage.setItem('userType', 'admin');
+            this.proceedToMFA();
+            return;
+        }
+        
+        // Check if agent credentials
+        if (username === 'david.agent' && password === 'password123') {
+            // Store user type for MFA verification
+            sessionStorage.setItem('userType', 'agent');
+            this.proceedToMFA();
+            return;
+        }
+        
+        // Invalid credentials
+        alert('Invalid username or password. Please try again.');
+    },
+    
+    proceedToMFA: function () {
         // Simulate Login
         const btn = document.querySelector('.login-form button');
         if (!btn) {
@@ -1132,11 +1158,25 @@ var app = {
         
         setTimeout(() => {
             if (pin === '000000') {
-                // Correct PIN - proceed to dashboard
+                // Correct PIN - check user type and route accordingly
                 clearInterval(this.state.mfaTimer);
                 document.getElementById('mfa-screen').style.display = 'none';
-                document.getElementById('app-layout').style.display = 'flex';
-                this.navigate('dashboard');
+                
+                const userType = sessionStorage.getItem('userType');
+                
+                if (userType === 'admin') {
+                    // Show admin portal
+                    document.getElementById('admin-app-layout').style.display = 'flex';
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    // Render admin dashboard
+                    if (window.admin && window.admin.renderDashboard) {
+                        window.admin.renderDashboard();
+                    }
+                } else {
+                    // Show agent portal
+                    document.getElementById('app-layout').style.display = 'flex';
+                    this.navigate('dashboard');
+                }
             } else {
                 // Incorrect PIN
                 this.showMfaError('Invalid PIN. Please try again.');
@@ -1266,10 +1306,17 @@ var app = {
             this.state.mfaTimer = null;
         }
         
+        // Clear session storage
+        sessionStorage.removeItem('userType');
+        
         // Return to Login
         document.getElementById('app-layout').style.display = 'none';
         document.getElementById('mfa-screen').style.display = 'none';
         document.getElementById('login-screen').style.display = 'flex';
+        
+        // Clear form fields
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
         
         // Reset view state if needed
         this.state.inWizard = false;

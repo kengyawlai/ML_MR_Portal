@@ -20,6 +20,7 @@
 
     <!-- App Script -->
     <script src="js/app.js" defer></script>
+    <script src="js/admin.js" defer></script>
 </head>
 
 <body>
@@ -245,6 +246,80 @@
             <!-- Dynamic Views -->
             <main id="app-content" class="page-content">
                 <!-- Content will be injected here by app.js -->
+            </main>
+        </div>
+    </div>
+
+    <!-- Admin App Layout (Initially Hidden) -->
+    <div id="admin-app-layout" class="app-layout" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z" />
+                </svg>
+                <span>ML MR Portal</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="dashboard" onclick="event.preventDefault(); admin.navigate('dashboard');">
+                        <i class="ph ph-squares-four"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="user-management" onclick="event.preventDefault(); admin.navigate('user-management');">
+                        <i class="ph ph-users"></i>
+                        <span>User Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="reports" onclick="event.preventDefault(); admin.navigate('reports');">
+                        <i class="ph ph-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="user-profile-mini">
+                <div class="avatar" style="background: #7c3aed;">AS</div>
+                <div style="flex: 1">
+                    <div style="font-weight: 500; font-size: 0.9rem;">Alan Super</div>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">Administrator</div>
+                </div>
+                <div title="Sign Out" id="admin-sign-out-btn" style="cursor: pointer;">
+                    <i class="ph ph-sign-out" style="color: #ef4444;"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-wrapper">
+            <!-- Topbar -->
+            <header class="top-bar">
+                <div class="breadcrumb">
+                    Admin Portal / <span id="admin-page-title">Dashboard</span>
+                </div>
+
+                <div class="header-actions">
+                    <div style="position: relative;">
+                        <input type="text" placeholder="Search..."
+                            style="padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 0.9rem; width: 240px; background: #f8fafc;">
+                    </div>
+                    <button class="icon-btn">
+                        <i class="ph ph-bell" style="font-size: 1.25rem;"></i>
+                    </button>
+                    <button class="icon-btn">
+                        <i class="ph ph-gear" style="font-size: 1.25rem;"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dynamic Views -->
+            <main id="admin-app-content" class="page-content">
+                <!-- Content will be injected here by admin.js -->
             </main>
         </div>
     </div>
