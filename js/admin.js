@@ -527,7 +527,7 @@ var admin = {
 
         content.innerHTML = `
             <div class="page-wrapper">
-                <h2>Admin Dashboard</h2>
+                <h2>Supervisor Dashboard</h2>
                 
                 <!-- Summary Cards -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px;">
