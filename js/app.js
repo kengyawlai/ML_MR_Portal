@@ -2273,7 +2273,7 @@ var app = {
                         <span class="kpi-trend trend-up"><i class="ph ph-check-circle"></i> ${metrics.approvalRate}% Rate</span>
                     </div>
                     <div class="card kpi-card">
-                        <span class="kpi-label">Total Processing</span>
+                        <span class="kpi-label">Processing</span>
                         <span class="kpi-value" style="color: var(--warning-color)">${metrics.pending + metrics.additionalInfo}</span>
                         <span class="kpi-trend"><i class="ph ph-clock"></i> In Progress</span>
                     </div>
